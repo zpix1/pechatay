@@ -1,6 +1,9 @@
 <template>
   <h1>Typer</h1>
   <div>
+    <div class="typing" v-if="paragaph > 0">
+      {{ text[paragaph - 1] }}
+    </div>
     <div class="example typing">
       <span v-for="(letterEntry, i) in textArray" 
             :key="letterEntry.letter + i"
@@ -12,42 +15,43 @@
             }">
         {{ letterEntry.letter }}
       </span>
-      <!-- {{ text }} -->
+    </div>
+    <div class="typing" v-if="paragaph + 1 < text.length">
+      {{ text[paragaph + 1] }}
     </div>
     <div 
-      contenteditable="true" class="place typing"
+      contenteditable="true" class="user-editable typing"
+      id='user-editable-typing'
       @input="placeChanged"
       @keydown="filterKeypress"
       @mousedown="filterMouse"
+      onselect='return false;'
+      oncut='return false;'
+      onpaste='return false;'
     ></div>
     
   </div>
 </template>
 
 <script>
-
-const blockedKeys = [
-  'ArrowRight',
-  'ArrowLeft'
-]
-
 export default {
   name: 'Typer',
   data() {
     return {
-      text: 'Привет, это тестирование набора текста.\n',
+      text: [
+        'Предыдущий параграф\n',
+        'Привет.\n',
+        'Следующий параграф\n',
+        ''
+      ],
       textArray: null,
-      pos: 0
+      pos: 0,
+      paragaph: 0,
+      userInput: ''
     }
   },
   mounted() {
-    this.textArray = [];
-    for (let i = 0; i < this.text.length; i++) {
-      this.textArray.push({
-        letter: this.text[i],
-        state: ''
-      });
-    }
+    this.updateTextArray();
   },
   methods: {
     filterMouse(event) {
@@ -55,9 +59,36 @@ export default {
       event.preventDefault();
     },
     filterKeypress(event) {
-      if (blockedKeys.includes(event.key)) {
+      if ([
+          'ArrowRight',
+          'ArrowLeft'
+        ].includes(event.key)) {
+        event.preventDefault();
+      } else if ((event.ctrlKey || event.metaKey) && ['c', 'v', 'a'].includes(event.key)) {
+        console.log('prevented!');
         event.preventDefault();
       }
+    },
+    finishText() {
+      alert('Well done!');
+    },
+    updateTextArray() {
+      this.textArray = [];
+      for (let i = 0; i < this.text[this.paragaph].length; i++) {
+        this.textArray.push({
+          letter: this.text[this.paragaph][i],
+          state: ''
+        });
+      }
+    },
+    addParagaph() {
+      this.paragaph++;
+      if (this.paragaph >= this.text.length) {
+        this.finishText();
+      }
+      this.pos = 0;
+      document.getElementById('user-editable-typing').innerText = '';
+      this.updateTextArray();
     },
     placeChanged(event) {
       if (event.inputType === 'insertText') {
@@ -69,8 +100,12 @@ export default {
       }
     },
     addLetter(letter) {
-      this.pos++
+      this.pos++;
       if (this.pos >= this.textArray.length) {
+        this.addParagaph();
+        return;
+      }
+      if (this.pos > this.textArray.length) {
         return;
       }
       if (letter == this.textArray[this.pos - 1].letter) {
@@ -111,6 +146,10 @@ export default {
 }
 .example > .letter.empty {
   color: black;
+}
+
+.user-editable {
+  /* pointer-events: none; */
 }
 
 .typing {
