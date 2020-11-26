@@ -21,13 +21,14 @@
     </div>
     <div 
       contenteditable="true" class="user-editable typing"
-      id='user-editable-typing'
+      :id="userEditableId"
+      ref="editable"
       @input="placeChanged"
       @keydown="filterKeypress"
       @mousedown="filterMouse"
-      onselect='return false;'
-      oncut='return false;'
-      onpaste='return false;'
+      onselect="return false;"
+      oncut="return false;"
+      onpaste="return false;"
     ></div>
     
   </div>
@@ -41,36 +42,48 @@ export default {
       text: [
         'Предыдущий параграф\n',
         'Привет.\n',
-        'Следующий параграф\n',
-        ''
+        'Следующий параграф\n'
       ],
       textArray: null,
       pos: 0,
       paragaph: 0,
-      userInput: ''
+      userInput: '',
+      finished: false,
+      userEditableId: 'user-editable-typing',
+      stats: {
+        totalParagraphs: 0,
+        totalLetters: 0,
+        totalErrors: 0,
+      }
     }
   },
+  emits: ['finish'],
   mounted() {
     this.updateTextArray();
   },
   methods: {
     filterMouse(event) {
-      event.target.focus();
+      if (!this.finished) {
+        event.target.focus();
+      }
       event.preventDefault();
     },
     filterKeypress(event) {
-      if ([
+      if (this.finished) {
+        event.preventDefault();
+      } else if ([
           'ArrowRight',
           'ArrowLeft'
         ].includes(event.key)) {
         event.preventDefault();
       } else if ((event.ctrlKey || event.metaKey) && ['c', 'v', 'a'].includes(event.key)) {
-        console.log('prevented!');
         event.preventDefault();
       }
     },
     finishText() {
-      alert('Well done!');
+      this.$emit('finish', this.stats);
+      this.$refs.editable.blur();
+      this.finished = true;
     },
     updateTextArray() {
       this.textArray = [];
@@ -82,12 +95,18 @@ export default {
       }
     },
     addParagaph() {
-      this.paragaph++;
-      if (this.paragaph >= this.text.length) {
+      if (this.paragaph + 1 >= this.text.length) {
         this.finishText();
+        return;
       }
+      this.paragaph++;
+
+      this.stats.totalParagraphs++;
+      this.stats.totalErrors += this.textArray.filter(e => e.state == '-').length;
+      this.stats.totalLetters += this.textArray.length;
+
       this.pos = 0;
-      document.getElementById('user-editable-typing').innerText = '';
+      this.$refs.editable.innerText = '';
       this.updateTextArray();
     },
     placeChanged(event) {
@@ -101,17 +120,17 @@ export default {
     },
     addLetter(letter) {
       this.pos++;
+      if (letter == this.textArray[this.pos - 1].letter) {
+        this.textArray[this.pos - 1].state = '+';
+      } else {
+        this.textArray[this.pos - 1].state = '-';
+      }
       if (this.pos >= this.textArray.length) {
         this.addParagaph();
         return;
       }
       if (this.pos > this.textArray.length) {
         return;
-      }
-      if (letter == this.textArray[this.pos - 1].letter) {
-        this.textArray[this.pos - 1].state = '+';
-      } else {
-        this.textArray[this.pos - 1].state = '-';
       }
       if (this.pos < this.textArray.length) {
         this.textArray[this.pos].state = 'c';
