@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Database from '../lib/database';
+import Database from '@/lib/database';
 
 export default {
   name: 'BookSelect',

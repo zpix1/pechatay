@@ -1,5 +1,4 @@
 <template>
-  <h1>Typer</h1>
   <div>
     <div class="typing" v-if="paragaph > 0">
       {{ text[paragaph - 1] }}
@@ -37,13 +36,16 @@
 <script>
 export default {
   name: 'Typer',
+  props: {
+    text: Array
+  },
   data() {
     return {
-      text: [
-        'Предыдущий параграф\n',
-        'Привет.\n',
-        'Следующий параграф\n'
-      ],
+      // text: [
+      //   'Предыдущий параграф\n',
+      //   'Привет.\n',
+      //   'Следующий параграф\n'
+      // ],
       textArray: null,
       pos: 0,
       paragaph: 0,

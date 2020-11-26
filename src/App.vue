@@ -1,14 +1,14 @@
 <template>
-  <Main/>
+  <TyperMenu bookId="sample0"/>
 </template>
 
 <script>
-import Main from './components/Main.vue'
+import TyperMenu from './components/TyperMenu.vue'
 
 export default {
   name: 'App',
   components: {
-    Main
+    TyperMenu
   }
 }
 </script>
