@@ -4,56 +4,70 @@ class Database {
   static dataVersion = NaN;
 
   constructor() {
+    console.log("DB Created");
     this.db = null;
+    this.scheme = null;
   }
 
   init() {
     return new Promise((resolve, reject) => {
-      this.db = null;
+      fetch('/scheme.json')
+        .then(r => r.json())
+        .then(json => {
+          this.scheme = json;
 
-      let request = indexedDB.open(Database.dbName, Database.version);
+          let request = indexedDB.open(Database.dbName, Database.version);
 
-      request.onerror = (event) => {
-        console.error('IndexDB creation error', event)
-        alert('IndexDB error... Maybe your browser is too old?');
-      };
+          request.onerror = (event) => {
+            console.error('IndexDB creation error', event)
+            alert('IndexDB error... Maybe your browser is too old?');
+          };
 
-      request.onsuccess = (event) => {
-        this.db = event.target.result;
-        if (localStorage.getItem('pechatayBooksVersion', 0) != Database.dataVersion) {
-          fetch('/texts.json')
-            .then(r => r.json())
-            .then(json => {
-              for (let i = 0; i < json.length; i++) {
-                const { text, ...other } = json[i];
+          request.onsuccess = (event) => {
+            this.db = event.target.result;
+            if (localStorage.getItem('pechatayBooksScheme') != JSON.stringify(json)) {
+              console.log('pechatayBooksScheme updated');
+              fetch('/texts.json')
+                .then(r => r.json())
+                .then(json => {
+                  for (let i = 0; i < json.length; i++) {
+                    const { text, ...other } = json[i];
 
-                let trBook = this.db.transaction('books', 'readwrite');
-                let books = trBook.objectStore('books');
-                books.add(other);
+                    let trBook = this.db.transaction('books', 'readwrite');
+                    let books = trBook.objectStore('books');
+                    books.add(other);
 
-                let trText = this.db.transaction('bookTexts', 'readwrite');
-                let bookTexts = trText.objectStore('bookTexts');
-                bookTexts.add({
-                  id: other.id,
-                  text: text
-                });
-              }
+                    let trText = this.db.transaction('bookTexts', 'readwrite');
+                    let bookTexts = trText.objectStore('bookTexts');
+                    bookTexts.add({
+                      id: other.id,
+                      text: text
+                    });
+                  }
+                  resolve();
+                }, reject);
+              localStorage.setItem('pechatayBooksScheme', JSON.stringify(json));
+            } else {
               resolve();
-            }, reject);
-          localStorage.setItem('pechatayBooksVersion', Database.dataVersion);
-        }
-      };
+            }
+          };
 
-      request.onupgradeneeded = (event) => {
-        let db = event.target.result;
-        if (!db.objectStoreNames.contains('books')) {
-          db.createObjectStore('books', { keyPath: 'id' });
-        }
-        if (!db.objectStoreNames.contains('bookTexts')) {
-          db.createObjectStore('bookTexts', { keyPath: 'id' });
-        }
-      }
+          request.onupgradeneeded = (event) => {
+            let db = event.target.result;
+            if (!db.objectStoreNames.contains('books')) {
+              db.createObjectStore('books', { keyPath: 'id' });
+            }
+            if (!db.objectStoreNames.contains('bookTexts')) {
+              db.createObjectStore('bookTexts', { keyPath: 'id' });
+            }
+          }
+        })
+
     });
+  }
+
+  getScheme() {
+    return this.scheme;
   }
 
   async listBooks() {
@@ -85,7 +99,13 @@ class Database {
       let request = books.get(id);
 
       request.onerror = reject;
-      request.onsuccess = () => resolve(request.result.text);
+      request.onsuccess = () => {
+        if (request.result) {
+          resolve(request.result.text);
+        } else {
+          reject();
+        }
+      } 
     });
   }
 }

@@ -9,13 +9,39 @@
         errors out of {{ stats.totalLetters }} 
         letters ({{ (stats.totalErrors * 100 / stats.totalLetters).toFixed(2) }}%)
       </div>
+      <div v-if="parentSet">
+        <router-link :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index - 1].id } }" v-if="parentSet.index - 1 >= 0"> (---- {{ parentSet.parent.items[parentSet.index - 1].title }} </router-link>
+        <router-link :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index + 1].id } }" v-if="parentSet.index + 1 < parentSet.parent.items.length"> {{ parentSet.parent.items[parentSet.index + 1].title }} ----) </router-link>
+      </div>
+    </div>
+    <div v-else>
+      Not found or not loaded
     </div>
   </div>
 </template>
 
 <script>
 import Typer from '@/components/Typer';
-import Database from '@/lib/database';
+// import Database from '@/lib/database';
+
+function findParent(scheme, id) {
+  for (let i = 0; i < scheme.items.length; i++) {
+    if (scheme.items[i].type === 'set') {
+      let res = findParent(scheme.items[i], id);
+      if (res) {
+        return res;
+      }
+    } else {
+      if (scheme.items[i].id === id) {
+        return {
+          parent: scheme,
+          index: i
+        }
+      }
+    }
+  }
+  return false;
+}
 
 export default {
   name: 'TyperMenu',
@@ -26,23 +52,20 @@ export default {
     return {
       finished: false,
       stats: null,
-      book: {},
+      book: null,
       text: null,
-      db: null
+      parentSet: null
     }
   },
-  async mounted() {
-    console.log(this.$route.params.id);
-    this.db = new Database();
-    console.log(this.db);
-    await this.db.init();
-    console.log(this.db);
-    this.db.getBook(this.$route.params.id).then(book => {
+  mounted() {
+    this.database.getBook(this.$route.params.id).then(book => {
       this.book = book;
     });
-    this.db.getBookText(this.$route.params.id).then(unformattedText => {
+    this.database.getBookText(this.$route.params.id).then(unformattedText => {
       this.text = unformattedText.split('\n');
     });
+    this.parentSet = findParent(this.database.getScheme(), this.$route.params.id);
+    console.log(this.parentSet);
   },
   methods: {
     finish(stats) {
