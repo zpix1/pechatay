@@ -1,14 +1,23 @@
 <template>
-  <TyperMenu bookId="sample0"/>
+  <div class="container">
+    <h1>Pechatay</h1>
+    <router-view />
+  </div>
 </template>
 
 <script>
-import TyperMenu from './components/TyperMenu.vue'
+// import TyperMenu from '@/views/TyperMenu.vue'
 
 export default {
-  name: 'App',
-  components: {
-    TyperMenu
-  }
+  name: 'App'
 }
 </script>
+
+<style scoped>
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+</style>

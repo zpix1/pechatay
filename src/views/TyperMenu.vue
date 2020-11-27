@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+  <div>
+    <router-link to="/">Go back</router-link>
     <div v-if="book && text">
       <h1>{{ book.title || ''}}</h1>
       <Typer @finish="finish" :text="text"/>
@@ -21,9 +22,6 @@ export default {
   components: {
     Typer
   },
-  props: {
-    bookId: String
-  },
   data() {
     return {
       finished: false,
@@ -34,12 +32,15 @@ export default {
     }
   },
   async mounted() {
+    console.log(this.$route.params.id);
     this.db = new Database();
+    console.log(this.db);
     await this.db.init();
-    this.db.getBook(this.bookId).then(book => {
+    console.log(this.db);
+    this.db.getBook(this.$route.params.id).then(book => {
       this.book = book;
     });
-    this.db.getBookText(this.bookId).then(unformattedText => {
+    this.db.getBookText(this.$route.params.id).then(unformattedText => {
       this.text = unformattedText.split('\n');
     });
   },
@@ -52,11 +53,4 @@ export default {
 }
 </script>
 
-<style scoped>
 
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-</style>

@@ -21,7 +21,7 @@ class Database {
       request.onsuccess = (event) => {
         this.db = event.target.result;
         if (localStorage.getItem('pechatayBooksVersion', 0) != Database.dataVersion) {
-          fetch('texts.json')
+          fetch('/texts.json')
             .then(r => r.json())
             .then(json => {
               for (let i = 0; i < json.length; i++) {
