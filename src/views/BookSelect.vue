@@ -1,12 +1,6 @@
 <template>
   <div v-if="scheme">
-    
     <SchemeEntry v-for="set in scheme.items" :set="set" :key="set.title"/>
-      <!-- <input type="button" @click="run" :value="`update database v=${version}`"> -->
-      
-      <!-- <div v-for="b in books" :key="b.id">
-        <router-link :to="{ name: 'TyperMenu', params: { id: b.id } }">{{ b.title }}</router-link>
-      </div> -->
   </div>
 </template>
 

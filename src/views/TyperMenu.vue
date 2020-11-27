@@ -1,8 +1,7 @@
 <template>
   <div>
-    <router-link to="/">Go back</router-link>
     <div v-if="book && text">
-      <h1>{{ book.title || ''}}</h1>
+      <div class="book-title">{{ book.title || ''}}</div>
       <Typer @finish="finish" :text="text"/>
       <div v-if="finished">
         You finished with {{ stats.totalErrors }} 
@@ -10,8 +9,12 @@
         letters ({{ (stats.totalErrors * 100 / stats.totalLetters).toFixed(2) }}%)
       </div>
       <div v-if="parentSet">
-        <router-link :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index - 1].id } }" v-if="parentSet.index - 1 >= 0"> (---- {{ parentSet.parent.items[parentSet.index - 1].title }} </router-link>
-        <router-link :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index + 1].id } }" v-if="parentSet.index + 1 < parentSet.parent.items.length"> {{ parentSet.parent.items[parentSet.index + 1].title }} ----) </router-link>
+        <router-link class="prev-chapter" :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index - 1].id } }" v-if="parentSet.index - 1 >= 0"> 
+          {{ parentSet.parent.items[parentSet.index - 1].title }} 
+        </router-link>
+        <router-link class="next-chapter" :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index + 1].id } }" v-if="parentSet.index + 1 < parentSet.parent.items.length"> 
+          {{ parentSet.parent.items[parentSet.index + 1].title }} 
+        </router-link>
       </div>
     </div>
     <div v-else>
@@ -22,7 +25,6 @@
 
 <script>
 import Typer from '@/components/Typer';
-// import Database from '@/lib/database';
 
 function findParent(scheme, id) {
   for (let i = 0; i < scheme.items.length; i++) {
@@ -75,5 +77,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+.book-title {
+  font-size: 25px;
+  margin-bottom: 20px;
+}
+
+</style>
 
 

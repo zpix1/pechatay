@@ -18,7 +18,7 @@
     <div class="typing" v-if="paragaph + 1 < text.length">
       {{ text[paragaph + 1] }}
     </div>
-    <div 
+    <div
       contenteditable="true" class="user-editable typing"
       :id="userEditableId"
       ref="editable"
@@ -41,11 +41,6 @@ export default {
   },
   data() {
     return {
-      // text: [
-      //   'Предыдущий параграф\n',
-      //   'Привет.\n',
-      //   'Следующий параграф\n'
-      // ],
       textArray: null,
       pos: 0,
       paragaph: 0,
@@ -97,15 +92,15 @@ export default {
       }
     },
     addParagaph() {
+      this.stats.totalParagraphs++;
+      this.stats.totalErrors += this.textArray.filter(e => e.state == '-').length;
+      this.stats.totalLetters += this.textArray.length;
+
       if (this.paragaph + 1 >= this.text.length) {
         this.finishText();
         return;
       }
       this.paragaph++;
-
-      this.stats.totalParagraphs++;
-      this.stats.totalErrors += this.textArray.filter(e => e.state == '-').length;
-      this.stats.totalLetters += this.textArray.length;
 
       this.pos = 0;
       this.$refs.editable.innerText = '';
