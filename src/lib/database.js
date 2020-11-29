@@ -47,9 +47,9 @@ class Database {
                   .then(json => {
                     for (let i = 0; i < json.length; i++) {
                       const { text, ...other } = json[i];
-                      let trText = this.db.transaction('bookTexts', 'readwrite');
-                      let bookTexts = trText.objectStore('bookTexts');
-                      bookTexts.add({
+                      let tr = this.db.transaction('bookTexts', 'readwrite');
+                      let bookTexts = tr.objectStore('bookTexts');
+                      bookTexts.put({
                         id: other.id,
                         text: text
                       });
@@ -97,6 +97,7 @@ class Database {
   }
 
   getBook(id) {
+    // !TODO: Each book should have user data (current paragraph, position, total stats)
     return this.id2book[id] || null;
     // return new Promise((resolve, reject) => {
     //   let tr = this.db.transaction(['books'], 'readonly');
