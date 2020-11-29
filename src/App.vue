@@ -1,19 +1,27 @@
 <template>
   <div class="container">
-    <div class="head">
-      <span class="header">Pechatay</span>
-      <router-link to="/">Continue typing () </router-link> |
-      <router-link to="/">Book select</router-link> |
-      <router-link to="/">Fight online</router-link>
-      
+    <div v-if="!$store.state.loading">
+      <div class="head">
+        <span class="header">Pechatay</span>
+        <router-link v-if="$store.state.currentBook" :to="{ name: 'TyperMenu', params: { id: $store.state.currentBook.id } }">Continue typing ({{ $store.state.currentBook.title }})</router-link> |
+        <router-link to="/">Book select</router-link> |
+        <router-link to="/">Fight online</router-link>
+        
+      </div>
+      <router-view :key="$route.path"/>
     </div>
-    <router-view :key="$route.path"/>
+    <div v-else>
+      Loading database...
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  beforeCreate() {
+    this.$store.commit('init');
+  }
 }
 </script>
 
@@ -32,6 +40,10 @@ export default {
 .head a {
   text-decoration: none;
   color: black;
+}
+
+.head a.router-link-active {
+  text-decoration: underline;
 }
 
 .container {

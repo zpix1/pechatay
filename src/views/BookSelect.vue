@@ -1,6 +1,6 @@
 <template>
-  <div v-if="scheme">
-    <SchemeEntry v-for="set in scheme.items" :set="set" :key="set.title"/>
+  <div v-if="this.$store.state.scheme">
+    <SchemeEntry v-for="set in this.$store.state.scheme.items" :set="set" :key="set.title"/>
   </div>
 </template>
 
@@ -11,11 +11,7 @@ export default {
   name: 'BookSelect',
   data() {
     return {
-      scheme: null
     }
-  },
-  mounted() {
-    this.scheme = this.database.getScheme();
   },
   components: {
     SchemeEntry

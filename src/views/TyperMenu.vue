@@ -60,14 +60,14 @@ export default {
     }
   },
   mounted() {
-    this.database.getBook(this.$route.params.id).then(book => {
-      this.book = book;
-    });
-    this.database.getBookText(this.$route.params.id).then(unformattedText => {
+    this.book = this.$store.state.db.getBook(this.$route.params.id);
+    this.$store.commit('setCurrentBook', this.book);
+    console.log(this.$store.state.currentBook);
+
+    this.$store.state.db.getBookText(this.$route.params.id).then(unformattedText => {
       this.text = unformattedText.split('\n');
     });
-    this.parentSet = findParent(this.database.getScheme(), this.$route.params.id);
-    console.log(this.parentSet);
+    this.parentSet = findParent(this.$store.state.db.getScheme(), this.$route.params.id);
   },
   methods: {
     finish(stats) {
