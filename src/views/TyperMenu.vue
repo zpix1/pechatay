@@ -32,25 +32,7 @@
 
 <script>
 import Typer from '@/components/Typer';
-
-function findParent(scheme, id) {
-  for (let i = 0; i < scheme.items.length; i++) {
-    if (scheme.items[i].type === 'set') {
-      let res = findParent(scheme.items[i], id);
-      if (res) {
-        return res;
-      }
-    } else {
-      if (scheme.items[i].id === id) {
-        return {
-          parent: scheme,
-          index: i
-        }
-      }
-    }
-  }
-  return false;
-}
+import { findParent } from '@/lib/utils.js';
 
 export default {
   name: 'TyperMenu',
@@ -63,7 +45,7 @@ export default {
       text: null,
       parentSet: null,
       update: false
-    }
+    };
   },
   mounted() {
     this.book = this.$store.state.db.getBook(this.$route.params.id);
@@ -75,12 +57,8 @@ export default {
     this.parentSet = findParent(this.$store.state.db.getScheme(), this.$route.params.id);
   },
   methods: {
-    // finish(data) {
-    //   this.book.userData = data
-    //   this.$store.state.db.setBook(this.book.id, this.book);
-    // },
     updateUserData(data) {
-      this.book.userData = data
+      this.book.userData = data;
       this.$store.state.db.setBook(this.book.id, this.book);
     },
     restartBook() {
@@ -89,16 +67,14 @@ export default {
       this.update = !this.update;
     }
   }
-}
+};
 </script>
 
 <style scoped>
-
 .book-title {
   font-size: 25px;
   margin-bottom: 20px;
 }
-
 </style>
 
 

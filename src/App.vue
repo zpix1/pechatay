@@ -22,7 +22,7 @@ export default {
   beforeCreate() {
     this.$store.commit('init');
   }
-}
+};
 </script>
 
 <style>

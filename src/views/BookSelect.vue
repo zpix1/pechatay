@@ -11,12 +11,12 @@ export default {
   name: 'BookSelect',
   data() {
     return {
-    }
+    };
   },
   components: {
     SchemeEntry
   }
-}
+};
 </script>
 
 <style scoped>

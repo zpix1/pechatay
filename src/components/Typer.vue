@@ -32,7 +32,6 @@
       oncut="return false;"
       onpaste="return false;"
     ></div>
-    
   </div>
 </template>
 
@@ -56,7 +55,7 @@ export default {
         totalErrors: this.userData.totalErrors || 0,
         finished: this.userData.finished || false
       }
-    }
+    };
   },
   emits: ['update-user-data'],
   mounted() {
@@ -159,27 +158,25 @@ export default {
       this.textArray[this.pos].state = 'c';
     }
   }
-}
+};
 </script>
 
 <style scoped>
-
 .example > .letter.good {
   color: blue;
 }
+
 .example > .letter.bad {
   text-decoration: underline red;
   color: red;
 }
+
 .example > .letter.current {
   text-decoration: underline;
 }
+
 .example > .letter.empty {
   color: black;
-}
-
-.user-editable {
-  /* pointer-events: none; */
 }
 
 .typing {
@@ -190,5 +187,4 @@ export default {
   font-family: monospace;
   font-size: 20px;
 }
-
 </style>

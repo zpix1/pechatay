@@ -37,7 +37,7 @@ class Database {
             let request = indexedDB.open(Database.dbName, Database.version);
 
             request.onerror = (event) => {
-              console.error('IndexDB creation error', event)
+              console.error('IndexDB creation error', event);
               alert('IndexDB error... Maybe your browser is too old?');
             };
 
@@ -71,8 +71,8 @@ class Database {
               if (!db.objectStoreNames.contains('bookTexts')) {
                 db.createObjectStore('bookTexts', { keyPath: 'id' });
               }
-            }
-          })
+            };
+          });
       }, 1000);
     });
   }
@@ -141,7 +141,7 @@ class Database {
         } else {
           reject();
         }
-      }
+      };
     });
   }
 }
