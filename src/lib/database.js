@@ -1,7 +1,8 @@
 class Database {
   static dbName = 'pechatayDB';
   static localStorageSchemeKey = 'pechatayBooksScheme';
-  static localStorageSettingsKey = 'pechataySettings';
+  static localStorageSettingsKeyPrefix = 'pechataySettings_';
+  static localStorageBookKeyPrefix = 'pechatayBook_';
 
   static schemeVersion = 1;
 
@@ -18,7 +19,10 @@ class Database {
         this.generateId2book(scheme.items[i]);
       }
     } else {
-      this.id2book[scheme.id] = scheme;
+      this.setBook(scheme.id, {
+        ...scheme,
+        userData: (this.id2book[scheme.id] ? this.id2book[scheme.id] || {} : {})
+      });
     }
   }
 
@@ -39,8 +43,8 @@ class Database {
 
             request.onsuccess = (event) => {
               this.db = event.target.result;
-              this.generateId2book(json);
               if (localStorage.getItem(Database.localStorageSchemeKey) != JSON.stringify(json)) {
+                this.generateId2book(json);
                 console.log('pechatayBooksScheme updated, loading texts json');
                 fetch('/texts.json')
                   .then(r => r.json())
@@ -78,27 +82,29 @@ class Database {
   }
 
   getSettingsValue(key) {
-    return JSON.parse(localStorage.getItem(Database.localStorageSettingsKey + key, null));
+    return JSON.parse(localStorage.getItem(Database.localStorageSettingsKeyPrefix + key, null));
   }
 
   setSettingsValue(key, value) {
-    return localStorage.setItem(Database.localStorageSettingsKey + key, JSON.stringify(value));
+    return localStorage.setItem(Database.localStorageSettingsKeyPrefix + key, JSON.stringify(value));
   }
 
-  async listBooks() {
-    return new Promise((resolve, reject) => {
-      let tr = this.db.transaction('books', 'readonly');
-      let books = tr.objectStore('books');
-      let request = books.getAll();
+  // async listBooks() {
+  //   return new Promise((resolve, reject) => {
+  //     let tr = this.db.transaction('books', 'readonly');
+  //     let books = tr.objectStore('books');
+  //     let request = books.getAll();
 
-      request.onerror = reject;
-      request.onsuccess = () => resolve(request.result);
-    });
-  }
+  //     request.onerror = reject;
+  //     request.onsuccess = () => resolve(request.result);
+  //   });
+  // }
 
   getBook(id) {
+    console.log('get book', JSON.parse(localStorage.getItem(Database.localStorageBookKeyPrefix + id, null)));
+    return JSON.parse(localStorage.getItem(Database.localStorageBookKeyPrefix + id, null));
     // !TODO: Each book should have user data (current paragraph, position, total stats)
-    return this.id2book[id] || null;
+    // return this.id2book[id] || null;
     // return new Promise((resolve, reject) => {
     //   let tr = this.db.transaction(['books'], 'readonly');
     //   let books = tr.objectStore('books');
@@ -108,6 +114,19 @@ class Database {
     //   request.onsuccess = () => resolve(request.result);
     // });
   }
+
+  setBook(id, book) {
+    console.log('set book', book);
+    localStorage.setItem(Database.localStorageBookKeyPrefix + id, JSON.stringify(book));
+  }
+
+  // saveId2book() {
+  //   localStorage.setItem(Database.localStorageId2bookKey, JSON.stringify(this.id2book));
+  // }
+
+  // setBookUserData(id, userData) {
+  //   this.id2book[id].userData = userData;
+  // }
 
   async getBookText(id) {
     return new Promise((resolve, reject) => {

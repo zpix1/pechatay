@@ -1,12 +1,19 @@
 <template>
   <div>
     <div v-if="book && text">
-      <div class="book-title">{{ book.title || ''}}</div>
-      <Typer @finish="finish" :text="text"/>
-      <div v-if="finished">
-        You finished with {{ stats.totalErrors }} 
-        errors out of {{ stats.totalLetters }} 
-        letters ({{ (stats.totalErrors * 100 / stats.totalLetters).toFixed(2) }}%)
+      <div class="book-title">{{ book.title || ''}} {{ book.userData.totalLetters }}</div>
+      <Typer 
+        @update-user-data="updateUserData"
+        :user-data="book.userData"
+        :text="text"
+        :key="update"
+      />
+      <div v-if="book.userData.finished">
+        You finished with {{ book.userData.totalErrors }} 
+        errors out of {{ book.userData.totalLetters }} 
+        letters ({{ (book.userData.totalErrors * 100 / book.userData.totalLetters).toFixed(2) }}%)
+        <br>
+        <input type="button" @click="restartBook" value="restart?"/>
       </div>
       <div v-if="parentSet">
         <router-link class="prev-chapter" :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index - 1].id } }" v-if="parentSet.index - 1 >= 0"> 
@@ -52,17 +59,15 @@ export default {
   },
   data() {
     return {
-      finished: false,
-      stats: null,
       book: null,
       text: null,
-      parentSet: null
+      parentSet: null,
+      update: false
     }
   },
   mounted() {
     this.book = this.$store.state.db.getBook(this.$route.params.id);
     this.$store.commit('setCurrentBook', this.book);
-    console.log(this.$store.state.currentBook);
 
     this.$store.state.db.getBookText(this.$route.params.id).then(unformattedText => {
       this.text = unformattedText.split('\n');
@@ -70,9 +75,18 @@ export default {
     this.parentSet = findParent(this.$store.state.db.getScheme(), this.$route.params.id);
   },
   methods: {
-    finish(stats) {
-      this.finished = true;
-      this.stats = stats;
+    // finish(data) {
+    //   this.book.userData = data
+    //   this.$store.state.db.setBook(this.book.id, this.book);
+    // },
+    updateUserData(data) {
+      this.book.userData = data
+      this.$store.state.db.setBook(this.book.id, this.book);
+    },
+    restartBook() {
+      this.book.userData = {};
+      this.$store.state.db.setBook(this.book.id, this.book);
+      this.update = !this.update;
     }
   }
 }

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div>
+      Pos: {{ pos }}, Paragraph: {{ paragaph }}
+    </div>
     <div class="typing" v-if="paragaph > 0">
       {{ text[paragaph - 1] }}
     </div>
@@ -37,36 +40,46 @@
 export default {
   name: 'Typer',
   props: {
-    text: Array
+    text: Array,
+    userData: Object
   },
   data() {
     return {
       textArray: null,
       pos: 0,
-      paragaph: 0,
+      paragaph: this.userData.totalParagraphs || 0,
       userInput: '',
-      finished: false,
       userEditableId: 'user-editable-typing',
       stats: {
-        totalParagraphs: 0,
-        totalLetters: 0,
-        totalErrors: 0,
+        totalParagraphs: this.userData.totalParagraphs || 0,
+        totalLetters: this.userData.totalLetters || 0,
+        totalErrors: this.userData.totalErrors || 0,
+        finished: this.userData.finished || false
       }
     }
   },
-  emits: ['finish'],
+  emits: ['update-user-data'],
   mounted() {
     this.updateTextArray();
+    setInterval(() => {
+      if (!this.stats.finished) {
+        this.emitUpdateUserData();
+      }
+    }, 5000);
   },
   methods: {
+    emitUpdateUserData() {
+      console.log('update', this.stats);
+      this.$emit('update-user-data', this.stats);
+    },
     filterMouse(event) {
-      if (!this.finished) {
+      if (!this.stats.finished) {
         event.target.focus();
       }
       event.preventDefault();
     },
     filterKeypress(event) {
-      if (this.finished) {
+      if (this.stats.finished) {
         event.preventDefault();
       } else if ([
           'ArrowRight',
@@ -78,9 +91,9 @@ export default {
       }
     },
     finishText() {
-      this.$emit('finish', this.stats);
+      this.stats.finished = true;
       this.$refs.editable.blur();
-      this.finished = true;
+      this.emitUpdateUserData();
     },
     updateTextArray() {
       this.textArray = [];
@@ -90,9 +103,9 @@ export default {
           state: ''
         });
       }
+      this.textArray[0].state = 'c';
     },
     addParagaph() {
-      this.stats.totalParagraphs++;
       this.stats.totalErrors += this.textArray.filter(e => e.state == '-').length;
       this.stats.totalLetters += this.textArray.length;
 
@@ -101,6 +114,7 @@ export default {
         return;
       }
       this.paragaph++;
+      this.stats.totalParagraphs++;
 
       this.pos = 0;
       this.$refs.editable.innerText = '';

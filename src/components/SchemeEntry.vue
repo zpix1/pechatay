@@ -8,6 +8,7 @@
     </div>
     <div v-else>
       <router-link :to="{ name: 'TyperMenu', params: { id: set.id } }">{{ set.title }}</router-link>
+      {{ $store.state.db.getBook(set.id).userData.finished ? '+' : '' }}
     </div>
   </div>
 </template>
