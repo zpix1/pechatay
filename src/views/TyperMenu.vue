@@ -1,21 +1,21 @@
 <template>
   <div>
     <div v-if="book && text">
-      <div class="book-title">{{ book.title || ''}} {{ book.userData.totalLetters }}</div>
+      <div class="book-title">{{ book.title || ''}}</div>
       <Typer 
         @update-user-data="updateUserData"
         :user-data="book.userData"
         :text="text"
         :key="update"
       />
-      <div v-if="book.userData.finished">
+      <div v-if="book.userData.finished" class="finished">
         You finished with {{ book.userData.totalErrors }} 
         errors out of {{ book.userData.totalLetters }} 
         letters ({{ (book.userData.totalErrors * 100 / book.userData.totalLetters).toFixed(2) }}%)
         <br>
         <input type="button" @click="restartBook" value="restart?"/>
       </div>
-      <div v-if="parentSet">
+      <div v-if="parentSet" class="footer">
         <router-link class="prev-chapter" :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index - 1].id } }" v-if="parentSet.index - 1 >= 0"> 
           {{ parentSet.parent.items[parentSet.index - 1].title }} 
         </router-link>
@@ -50,7 +50,6 @@ export default {
   mounted() {
     this.book = this.$store.state.db.getBook(this.$route.params.id);
     this.$store.commit('setCurrentBook', this.book);
-
     this.$store.state.db.getBookText(this.$route.params.id).then(unformattedText => {
       this.text = unformattedText.split('\n');
     });
@@ -60,6 +59,11 @@ export default {
     updateUserData(data) {
       this.book.userData = data;
       this.$store.state.db.setBook(this.book.id, this.book);
+      if (data.finished) {
+        if (this.parentSet.index + 1 < this.parentSet.parent.items.length) {
+          this.$store.commit('setCurrentBook', this.parentSet.parent.items[this.parentSet.index + 1]);
+        }
+      }
     },
     restartBook() {
       this.book.userData = {};
@@ -73,6 +77,18 @@ export default {
 <style scoped>
 .book-title {
   font-size: 25px;
+  margin-bottom: 20px;
+}
+
+.prev-chapter {
+  float: left;
+}
+
+.next-chapter {
+  float: right;
+}
+
+.finished {
   margin-bottom: 20px;
 }
 </style>

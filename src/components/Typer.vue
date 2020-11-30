@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div>
+    <div class="info">
       Pos: {{ pos }}, Paragraph: {{ paragaph }}
     </div>
-    <div class="typing" v-if="paragaph > 0">
+    <!-- <div class="typing" v-if="paragaph > 0">
       {{ text[paragaph - 1] }}
-    </div>
+    </div> -->
     <div class="example typing">
       <span v-for="(letterEntry, i) in textArray" 
             :key="letterEntry.letter + i"
@@ -18,9 +18,9 @@
         {{ letterEntry.letter }}
       </span>
     </div>
-    <div class="typing" v-if="paragaph + 1 < text.length">
+    <!-- <div class="typing" v-if="paragaph + 1 < text.length">
       {{ text[paragaph + 1] }}
-    </div>
+    </div> -->
     <div
       contenteditable="true" class="user-editable typing"
       :id="userEditableId"
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { placeCaretAtEnd } from '@/lib/utils';
+
 export default {
   name: 'Typer',
   props: {
@@ -60,11 +62,11 @@ export default {
   emits: ['update-user-data'],
   mounted() {
     this.updateTextArray();
-    setInterval(() => {
-      if (!this.stats.finished) {
-        this.emitUpdateUserData();
-      }
-    }, 5000);
+    // setInterval(() => {
+    //   if (!this.stats.finished) {
+    //     this.emitUpdateUserData();
+    //   }
+    // }, 5000);
   },
   methods: {
     emitUpdateUserData() {
@@ -74,6 +76,7 @@ export default {
     filterMouse(event) {
       if (!this.stats.finished) {
         event.target.focus();
+        placeCaretAtEnd(this.$ref.editable);
       }
       event.preventDefault();
     },
@@ -118,6 +121,7 @@ export default {
       this.pos = 0;
       this.$refs.editable.innerText = '';
       this.updateTextArray();
+      this.emitUpdateUserData();
     },
     placeChanged(event) {
       if (event.inputType === 'insertText') {
@@ -177,6 +181,10 @@ export default {
 
 .example > .letter.empty {
   color: black;
+}
+
+.info {
+  margin-bottom: 20px;
 }
 
 .typing {

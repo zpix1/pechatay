@@ -23,10 +23,10 @@ const store = createStore({
       state.db.init().then(() => {
         state.loading = false;
         state.scheme = state.db.getScheme();
+        state.currentBook = state.db.getSettingsValue('currentBook');
       });
     },
     setCurrentBook(state, book) {
-      console.log('setCurrentBook mutation', book);
       state.currentBook = book;
       state.db.setSettingsValue('currentBook', book);
     }
