@@ -189,6 +189,8 @@ export default {
   margin-bottom: 10px;
 
   font-family: var(--typing-font), monospace;
-  font-size: 20px;
+  font-size: 19px;
+
+  overflow: hidden;
 }
 </style>

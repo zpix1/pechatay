@@ -96,6 +96,10 @@ export default {
 .result {
   margin-bottom: 10px;
 }
+
+.footer {
+  margin-top: 10px;
+}
 </style>
 
 
