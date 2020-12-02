@@ -22,6 +22,7 @@
       {{ text[paragaph + 1] }}
     </div> -->
     <div
+      v-if="!this.stats.finished"
       contenteditable="true" class="user-editable typing"
       :id="userEditableId"
       ref="editable"
@@ -62,11 +63,6 @@ export default {
   emits: ['update-user-data'],
   mounted() {
     this.updateTextArray();
-    // setInterval(() => {
-    //   if (!this.stats.finished) {
-    //     this.emitUpdateUserData();
-    //   }
-    // }, 5000);
   },
   methods: {
     emitUpdateUserData() {
@@ -166,6 +162,8 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&family=Roboto:wght@300;500&display=swap');
+
 .example > .letter.good {
   color: blue;
 }
@@ -192,7 +190,8 @@ export default {
   padding: 10px;
   margin-bottom: 10px;
 
-  font-family: monospace;
+  /* font-family: monospace; */
+  font-family: 'Roboto Mono', monospace;
   font-size: 20px;
 }
 </style>

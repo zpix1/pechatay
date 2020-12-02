@@ -9,19 +9,20 @@
         :key="update"
       />
       <div v-if="book.userData.finished" class="finished">
+        <div class="result">
         You finished with {{ book.userData.totalErrors }} 
         errors out of {{ book.userData.totalLetters }} 
         letters ({{ (book.userData.totalErrors * 100 / book.userData.totalLetters).toFixed(2) }}%)
-        <br>
-        <input type="button" @click="restartBook" value="restart?"/>
+        </div>
+        <div class="g-text-button" @click="restartBook">Type again?</div>
+        <div v-if="parentSet" class="footer">
+        <router-link class="prev-chapter g-text-button" :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index - 1].id } }" v-if="parentSet.index - 1 >= 0"> 
+          Prev: {{ parentSet.parent.items[parentSet.index - 1].title }} 
+        </router-link>
+        <router-link class="next-chapter g-text-button" :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index + 1].id } }" v-if="parentSet.index + 1 < parentSet.parent.items.length"> 
+          Next: {{ parentSet.parent.items[parentSet.index + 1].title }} 
+        </router-link>
       </div>
-      <div v-if="parentSet" class="footer">
-        <router-link class="prev-chapter" :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index - 1].id } }" v-if="parentSet.index - 1 >= 0"> 
-          {{ parentSet.parent.items[parentSet.index - 1].title }} 
-        </router-link>
-        <router-link class="next-chapter" :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index + 1].id } }" v-if="parentSet.index + 1 < parentSet.parent.items.length"> 
-          {{ parentSet.parent.items[parentSet.index + 1].title }} 
-        </router-link>
       </div>
     </div>
     <div v-else>
@@ -90,6 +91,10 @@ export default {
 
 .finished {
   margin-bottom: 20px;
+}
+
+.result {
+  margin-bottom: 10px;
 }
 </style>
 
