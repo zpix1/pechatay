@@ -14,6 +14,10 @@ const routes = [
     component: TyperMenu,
     props: true
   },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/'
+  }
 ];
 
 const router = createRouter({

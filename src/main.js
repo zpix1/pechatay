@@ -14,7 +14,12 @@ const store = createStore({
       loading: false,
       db: new Database(),
       currentBook: null,
-      scheme: null
+      scheme: null,
+      settings: {},
+      settingsTemplate: {
+        font: ['Roboto Mono', 'Source Code Pro'],
+        theme: ['Light', 'Dark']
+      }
     };
   },
   mutations: {
@@ -24,16 +29,24 @@ const store = createStore({
         state.loading = false;
         state.scheme = state.db.getScheme();
         state.currentBook = state.db.getSettingsValue('currentBook');
+
+        for (let k in state.settingsTemplate) {
+          const userRes = state.db.getSettingsValue('settings_' + k);
+          if (state.settingsTemplate[k].includes(userRes)) {
+            state.settings[k] = userRes;
+          } else {
+            state.settings[k] = state.settingsTemplate[k][0];
+          }
+        }
       });
     },
     setCurrentBook(state, book) {
       state.currentBook = book;
       state.db.setSettingsValue('currentBook', book);
-    }
-  },
-  getters: {
-    currentBook(state) {
-      return state.currentBook;
+    },
+    setSetting(state, { setting, value }) {
+      state.settings[setting] = value;
+      state.db.setSettingsValue('settings_' + setting, value);
     }
   }
 });

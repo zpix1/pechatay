@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="info">
-      Pos: {{ pos }}, Paragraph: {{ paragaph }}
+      position: {{ pos }}, paragraph: {{ paragaph }}, wpm: {{ 55 }}
     </div>
     <!-- <div class="typing" v-if="paragaph > 0">
       {{ text[paragaph - 1] }}
@@ -72,7 +72,7 @@ export default {
     filterMouse(event) {
       if (!this.stats.finished) {
         event.target.focus();
-        placeCaretAtEnd(this.$ref.editable);
+        placeCaretAtEnd(this.$refs.editable);
       }
       event.preventDefault();
     },
@@ -162,10 +162,8 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&family=Roboto:wght@300;500&display=swap');
-
 .example > .letter.good {
-  color: blue;
+  color: var(--correct-char-color);
 }
 
 .example > .letter.bad {
@@ -186,12 +184,11 @@ export default {
 }
 
 .typing {
-  border: 1px solid black;
+  border: 1px solid var(--font-color);
   padding: 10px;
   margin-bottom: 10px;
 
-  /* font-family: monospace; */
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--typing-font), monospace;
   font-size: 20px;
 }
 </style>
