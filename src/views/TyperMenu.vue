@@ -14,7 +14,7 @@
         errors out of {{ book.userData.totalLetters }} 
         letters ({{ (book.userData.totalErrors * 100 / book.userData.totalLetters).toFixed(2) }}%)
         </div>
-        <div class="g-text-button" @click="restartBook">Type again?</div>
+        <span class="g-text-button" @click="restartBook">Type again?</span>
         <div v-if="parentSet" class="footer">
         <router-link class="prev-chapter g-text-button" :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index - 1].id } }" v-if="parentSet.index - 1 >= 0"> 
           Prev: {{ parentSet.parent.items[parentSet.index - 1].title }} 

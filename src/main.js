@@ -17,7 +17,7 @@ const store = createStore({
       scheme: null,
       settings: {},
       settingsTemplate: {
-        font: ['Roboto Mono', 'Source Code Pro'],
+        font: ['Roboto Mono', 'Source Code Pro', 'IBM Plex Mono', 'JetBrains Mono'],
         theme: ['Light', 'Dark']
       }
     };
@@ -28,17 +28,17 @@ const store = createStore({
       state.db.init().then(() => {
         state.loading = false;
         state.scheme = state.db.getScheme();
-        state.currentBook = state.db.getSettingsValue('currentBook');
-
-        for (let k in state.settingsTemplate) {
-          const userRes = state.db.getSettingsValue('settings_' + k);
-          if (state.settingsTemplate[k].includes(userRes)) {
-            state.settings[k] = userRes;
-          } else {
-            state.settings[k] = state.settingsTemplate[k][0];
-          }
-        }
       });
+
+      state.currentBook = state.db.getSettingsValue('currentBook');
+      for (let k in state.settingsTemplate) {
+        const userRes = state.db.getSettingsValue('settings_' + k);
+        if (state.settingsTemplate[k].includes(userRes)) {
+          state.settings[k] = userRes;
+        } else {
+          state.settings[k] = state.settingsTemplate[k][0];
+        }
+      }
     },
     setCurrentBook(state, book) {
       state.currentBook = book;

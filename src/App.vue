@@ -33,6 +33,9 @@ export default {
   beforeCreate() {
     this.$store.commit('init');
   },
+  mounted() {
+    this.$el.style = this.cssVars;
+  },
   computed: {
     cssVars() {
       let both = {

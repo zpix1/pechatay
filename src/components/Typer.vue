@@ -189,8 +189,12 @@ export default {
   margin-bottom: 10px;
 
   font-family: var(--typing-font), monospace;
+  font-weight: 300;
   font-size: 19px;
 
-  overflow: hidden;
+  height: auto;
+  line-height: normal;
+  border-radius: 3px;
+  outline: 0;
 }
 </style>

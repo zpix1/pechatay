@@ -23,8 +23,6 @@
         <p class="typer-font-example">
           Алая вспышка осветила силуэт зазубренного крыла...
         </p>
-
-        
       </div>
     </div>
   </div>
@@ -97,6 +95,7 @@ export default {
 
 .typer-font-example {  
   font-family: var(--typing-font), monospace;
+  font-weight: 300;
 
   border: 1px solid var(--font-color);
   padding: 10px;
