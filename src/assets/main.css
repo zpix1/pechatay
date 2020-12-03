@@ -27,3 +27,19 @@ body {
   cursor: pointer;
   color: var(--font-color);
 }
+
+
+.g-typing {
+  border: 1px solid var(--font-color);
+  padding: 10px;
+  margin-bottom: 10px;
+
+  font-family: var(--typing-font), monospace;
+  font-weight: 300;
+  font-size: 19px;
+
+  height: auto;
+  line-height: normal;
+  border-radius: 3px;
+  outline: 0;
+}

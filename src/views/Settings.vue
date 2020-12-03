@@ -6,23 +6,37 @@
         <div class="header">Settings</div>
 
         <div class="setting-title">Theme</div>
+        <div class="select-div">
         <div v-for="v in $store.state.settingsTemplate.theme" :key="v">
-          <span :class="{ 'g-text-button': true, 'active-setting': $store.state.settings.theme == v }"
+          <span :class="{ 'g-text-button': true, 'select-option': true, 'active-setting': $store.state.settings.theme == v }"
                 @click="$store.commit('setSetting', {setting: 'theme', value: v})"
                 
           >{{ v }}</span>
         </div>
+        </div>
 
         <div class="setting-title">Typer font</div>
-        <div v-for="v in $store.state.settingsTemplate.font" :key="v">
-          <span :class="{ 'g-text-button': true, 'active-setting': $store.state.settings.font == v }"
-                @click="$store.commit('setSetting', {setting: 'font', value: v})"
-                
-          >{{ v }}</span>
+        <div class="select-div">
+          <div v-for="v in $store.state.settingsTemplate.font" :key="v">
+            <span :class="{ 'g-text-button': true, 'select-option': true, 'active-setting': $store.state.settings.font == v }"
+                  @click="$store.commit('setSetting', {setting: 'font', value: v})"
+                  
+            >{{ v }}</span>
+          </div>
         </div>
-        <p class="typer-font-example">
+        <p class="g-typing">
           Алая вспышка осветила силуэт зазубренного крыла...
         </p>
+
+        <div class="setting-title">Type mode</div>
+        <div class="select-div">
+          <div v-for="v in $store.state.settingsTemplate.typeMode" :key="v">
+            <span :class="{ 'g-text-button': true, 'select-option': true, 'active-setting': $store.state.settings.typeMode == v }"
+                  @click="$store.commit('setSetting', {setting: 'typeMode', value: v})"
+                  
+            >{{ v }}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -30,15 +44,15 @@
 
 <script>
 export default {
-  name: 'Settings',
+  name: "Settings",
   props: {
     modal: Boolean,
   },
-  emits: ['close'],
+  emits: ["close"],
   methods: {
     outsideClick(event) {
       if (event.target == this.$refs.modal) {
-        this.$emit('close');
+        this.$emit("close");
       }
     }
   }
@@ -59,9 +73,10 @@ export default {
 
 .modal-content {
   background-color: var(--main-color);
+  border: 1px solid var(--font-color);
   margin: 15% auto;
   padding: 20px;
-  border: 1px solid #888;
+  border-radius: 3px;
   max-width: 600px;
 }
 
@@ -74,6 +89,7 @@ export default {
 
 .close:hover,
 .close:focus {
+  color: black;
   text-decoration: none;
   cursor: pointer;
 }
@@ -89,17 +105,20 @@ export default {
   margin-bottom: 10px;
 }
 
-.active-setting {
-  text-decoration: underline;
+.select-div {
+  border: 1px solid var(--font-color);
+  padding: 5px;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.typer-font-example {  
-  font-family: var(--typing-font), monospace;
-  font-weight: 300;
+.select-option {
+  /* user-select: none; */
+}
 
-  border: 1px solid var(--font-color);
-  padding: 10px;
-  margin-bottom: 10px;
-  font-size: 20px;
+.active-setting {
+  text-decoration: underline;
 }
 </style>

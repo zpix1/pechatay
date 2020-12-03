@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import SchemeEntry from '@/components/SchemeEntry';
+import SchemeEntry from "@/components/SchemeEntry";
 
 export default {
-  name: 'BookSelect',
+  name: "BookSelect",
   data() {
     return {
     };

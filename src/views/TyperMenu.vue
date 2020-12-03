@@ -32,11 +32,11 @@
 </template>
 
 <script>
-import Typer from '@/components/Typer';
-import { findParent } from '@/lib/utils.js';
+import Typer from "@/components/Typer";
+import { findParent } from "@/lib/utils.js";
 
 export default {
-  name: 'TyperMenu',
+  name: "TyperMenu",
   components: {
     Typer
   },
@@ -50,9 +50,9 @@ export default {
   },
   mounted() {
     this.book = this.$store.state.db.getBook(this.$route.params.id);
-    this.$store.commit('setCurrentBook', this.book);
+    this.$store.commit("setCurrentBook", this.book);
     this.$store.state.db.getBookText(this.$route.params.id).then(unformattedText => {
-      this.text = unformattedText.split('\n');
+      this.text = unformattedText.split("\n");
     });
     this.parentSet = findParent(this.$store.state.db.getScheme(), this.$route.params.id);
   },
@@ -62,7 +62,7 @@ export default {
       this.$store.state.db.setBook(this.book.id, this.book);
       if (data.finished) {
         if (this.parentSet.index + 1 < this.parentSet.parent.items.length) {
-          this.$store.commit('setCurrentBook', this.parentSet.parent.items[this.parentSet.index + 1]);
+          this.$store.commit("setCurrentBook", this.parentSet.parent.items[this.parentSet.index + 1]);
         }
       }
     },

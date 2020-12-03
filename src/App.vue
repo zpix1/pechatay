@@ -21,37 +21,34 @@
 </template>
 
 <script>
-import Settings from '@/views/Settings';
+import Settings from "@/views/Settings";
 
 export default {
-  name: 'App',
+  name: "App",
   data() {
     return {
       settings: false,
     };
   },
   beforeCreate() {
-    this.$store.commit('init');
-  },
-  mounted() {
-    this.$el.style = this.cssVars;
+    this.$store.commit("init");
   },
   computed: {
     cssVars() {
       let both = {
-        '--typing-font': this.$store.state.settings.font,
+        "--typing-font": this.$store.state.settings.font,
       };
       let darkTheme = {
-        '--main-color': 'black',
-        '--font-color': 'white',
-        '--correct-char-color': 'gray'
+        "--main-color": "black",
+        "--font-color": "white",
+        "--correct-char-color": "gray"
       };
       let lightTheme = {
-        '--main-color': 'white',
-        '--font-color': 'black',
-        '--correct-char-color': 'blue'
+        "--main-color": "white",
+        "--font-color": "black",
+        "--correct-char-color": "blue"
       };
-      if (this.$store.state.settings.theme === 'Light') {
+      if (this.$store.state.settings.theme === "Light") {
         return { ...both, ...lightTheme };
       } else {
         return { ...both, ...darkTheme };

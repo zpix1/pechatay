@@ -1,10 +1,10 @@
-import { createApp } from 'vue';
-import { createStore } from 'vuex';
-import App from './App.vue';
+import { createApp } from "vue";
+import { createStore } from "vuex";
+import App from "./App.vue";
 
-import router from './router';
+import router from "./router";
 
-import Database from '@/lib/database';
+import Database from "@/lib/database";
 
 let app = createApp(App);
 
@@ -17,8 +17,9 @@ const store = createStore({
       scheme: null,
       settings: {},
       settingsTemplate: {
-        font: ['Roboto Mono', 'Source Code Pro', 'IBM Plex Mono', 'JetBrains Mono'],
-        theme: ['Light', 'Dark']
+        font: ["Roboto Mono", "Source Code Pro", "IBM Plex Mono", "JetBrains Mono"],
+        theme: ["Light", "Dark"],
+        typeMode: ["In place", "Separate window"]
       }
     };
   },
@@ -30,9 +31,9 @@ const store = createStore({
         state.scheme = state.db.getScheme();
       });
 
-      state.currentBook = state.db.getSettingsValue('currentBook');
+      state.currentBook = state.db.getSettingsValue("currentBook");
       for (let k in state.settingsTemplate) {
-        const userRes = state.db.getSettingsValue('settings_' + k);
+        const userRes = state.db.getSettingsValue("settings_" + k);
         if (state.settingsTemplate[k].includes(userRes)) {
           state.settings[k] = userRes;
         } else {
@@ -42,11 +43,11 @@ const store = createStore({
     },
     setCurrentBook(state, book) {
       state.currentBook = book;
-      state.db.setSettingsValue('currentBook', book);
+      state.db.setSettingsValue("currentBook", book);
     },
     setSetting(state, { setting, value }) {
       state.settings[setting] = value;
-      state.db.setSettingsValue('settings_' + setting, value);
+      state.db.setSettingsValue("settings_" + setting, value);
     }
   }
 });
@@ -54,4 +55,4 @@ const store = createStore({
 app
   .use(router)
   .use(store)
-  .mount('#app');
+  .mount("#app");

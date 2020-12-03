@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'SchemeEntry',
+  name: "SchemeEntry",
   props: {
     set: Object
   }
