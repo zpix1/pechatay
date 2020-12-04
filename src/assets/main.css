@@ -22,12 +22,26 @@ body {
   overflow: auto;
 }
 
+a {
+  color: black;
+}
+
+.g-header {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+.g-subtitle {
+  font-size: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .g-text-button {
   text-decoration: none;
   cursor: pointer;
   color: var(--font-color);
 }
-
 
 .g-typing {
   border: 1px solid var(--font-color);

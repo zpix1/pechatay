@@ -3,9 +3,9 @@
     <div class="modal" ref="modal">
       <div class="modal-content">
         <span class="close" @click="$emit('close')">&times;</span>
-        <div class="header">Settings</div>
+        <div class="g-header">Settings</div>
 
-        <div class="setting-title">Theme</div>
+        <div class="g-subtitle">Theme</div>
         <div class="select-div">
           <div v-for="v in $store.state.settingsTemplate.theme" :key="v">
           <span
@@ -15,7 +15,7 @@
           </div>
         </div>
 
-        <div class="setting-title">Typer font</div>
+        <div class="g-subtitle">Typer font</div>
         <div class="select-div">
           <div v-for="v in $store.state.settingsTemplate.font" :key="v">
             <span
@@ -28,7 +28,7 @@
           Алая вспышка осветила силуэт зазубренного крыла...
         </p>
 
-        <div class="setting-title">Type mode</div>
+        <div class="g-subtitle">Type mode</div>
         <div class="select-div">
           <div v-for="v in $store.state.settingsTemplate.typeMode" :key="v">
             <span
@@ -92,17 +92,6 @@ export default {
   color: black;
   text-decoration: none;
   cursor: pointer;
-}
-
-.header {
-  font-size: 25px;
-  margin-bottom: 10px;
-}
-
-.setting-title {
-  font-size: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 
 .select-div {
