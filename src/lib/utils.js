@@ -34,3 +34,11 @@ export function placeCaretAtEnd(el) {
       textRange.select();
   }
 }
+
+export function getWPM(totalMs, totalLetters) {
+  if (totalMs !== 0) {
+    return (totalLetters / 5) / (totalMs / 1000 / 60);
+  } else {
+    return 0;
+  }
+}

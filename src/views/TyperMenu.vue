@@ -12,7 +12,9 @@
         <div class="result">
           You finished with {{ book.userData.totalErrors }}
           errors out of {{ book.userData.totalLetters }}
-          letters ({{ (book.userData.totalErrors * 100 / book.userData.totalLetters).toFixed(2) }}%)
+          letters ({{ (book.userData.totalErrors * 100 / book.userData.totalLetters).toFixed(2) }}%).
+          <span v-if="hideTime" @click="hideTime = false">Time result hidden.</span>
+          <span v-else @click="hideTime = true">Mean wpm: {{ getWPM(book.userData.totalMs, book.userData.totalLetters).toFixed(1) }}. Time: {{ (book.userData.totalMs / 1000).toFixed(1) }}.</span>
         </div>
         <span class="g-text-button" @click="restartBook">Type again?</span>
         <div v-if="parentSet" class="footer">
@@ -37,7 +39,7 @@
 
 <script>
 import Typer from "@/components/Typer";
-import {findParent} from "@/lib/utils.js";
+import {findParent, getWPM} from "@/lib/utils.js";
 
 export default {
   name: "TyperMenu",
@@ -46,6 +48,7 @@ export default {
   },
   data() {
     return {
+      hideTime: true,
       book: null,
       text: null,
       parentSet: null,
@@ -61,6 +64,7 @@ export default {
     this.parentSet = findParent(this.$store.state.db.getScheme(), this.$route.params.id);
   },
   methods: {
+    getWPM: getWPM,
     updateUserData(data) {
       this.book.userData = data;
       this.$store.state.db.setBook(this.book.id, this.book);

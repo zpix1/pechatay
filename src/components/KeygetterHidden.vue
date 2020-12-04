@@ -31,7 +31,6 @@ export default {
     );
   },
   unmounted() {
-    console.log("destroyed");
     document.removeEventListener(
       "keydown",
       this.listener,

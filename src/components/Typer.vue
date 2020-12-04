@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="info">
-      position: {{ pos }}, paragraph: {{ paragraph }}, wpm: {{ 55 }}
+      position: {{ pos }}, paragraph: {{ paragraph }}, <span v-if="hideTime" @click="hideTime = false">time stats hidden</span>
+      <span v-else @click="hideTime = true">wpm: {{ wpm.toFixed(1) }}, time: {{ (currentMs / 1000).toFixed(1) }}</span>
+<!--      <span @click="hideTime = !hideTime" class="g-text-button">{{ hideTime ? "show time stats" : "hide time stats" }}</span><br>-->
     </div>
     <!-- <div class="typing" v-if="paragaph > 0">
       {{ text[paragaph - 1] }}
@@ -24,7 +26,7 @@
     <div v-if="!stats.finished">
       <KeygetterVisible
           v-if="mode === 'Separate window'"
-          clearHook="clearv"
+          clearHook="clearHook"
           @add-letter="addLetter"
           @remove-letter="removeLetter"
           :finished="stats.finished"
@@ -70,13 +72,22 @@ export default {
       textArray: null,
       pos: 0,
       paragraph: this.userData.totalParagraphs || 0,
-      clearHook: 0,
+
       stats: {
+        totalMs: this.userData.totalMs || 0,
         totalParagraphs: this.userData.totalParagraphs || 0,
         totalLetters: this.userData.totalLetters || 0,
         totalErrors: this.userData.totalErrors || 0,
         finished: this.userData.finished || false
-      }
+      },
+
+      hideTime: true,
+      state: "not-started",
+      startTime: null,
+      currentMs: 0,
+      updateTimeIntervalId: null,
+
+      clearHook: 0
     };
   },
   emits: ["update-user-data"],
@@ -101,7 +112,19 @@ export default {
       }
       this.textArray[0].state = "c";
     },
+    updateTime() {
+      if (this.state === "started") {
+        this.currentMs = (new Date()) - this.startTime;
+      } else {
+        this.currentMs = this.totalMs;
+      }
+    },
     addParagraph() {
+      this.updateTime();
+
+      this.state = "not-started";
+
+      this.stats.totalMs += (new Date()) - this.startTime;
       this.stats.totalErrors += this.textArray.filter(e => e.state === "-").length;
       this.stats.totalLetters += this.textArray.length;
 
@@ -136,6 +159,10 @@ export default {
       }
       if (this.pos < this.textArray.length) {
         this.textArray[this.pos].state = "c";
+        if (this.state === "not-started") {
+          this.state = "started";
+          this.startTime = new Date();
+        }
       }
     },
     removeLetter() {
@@ -153,6 +180,13 @@ export default {
   computed: {
     mode() {
       return this.$store.state.settings.typeMode;
+    },
+    wpm() {
+      if (this.currentMs !== 0) {
+        return (this.pos / 5) / (this.currentMs / 1000 / 60);
+      } else {
+        return 0;
+      }
     }
   },
   watch: {
@@ -160,6 +194,17 @@ export default {
       this.pos = 0;
       this.updateTextArray();
       this.emitUpdateUserData();
+    },
+    state(value) {
+      if (value === "started") {
+        console.log("started");
+        this.updateTimeIntervalId = setInterval(() => {
+          this.updateTime();
+        }, 500);
+      } else {
+        console.log("removed");
+        clearInterval(this.updateTimeIntervalId);
+      }
     }
   }
 };
