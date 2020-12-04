@@ -4,7 +4,7 @@
       <div class="modal-content">
         <span class="close" @click="$emit('close')">&times;</span>
         <div class="header">Settings</div>
-        
+
         <div class="setting-title">Theme</div>
         <div class="select-div">
           <div v-for="v in $store.state.settingsTemplate.theme" :key="v">
@@ -74,7 +74,7 @@ export default {
 .modal-content {
   background-color: var(--main-color);
   border: 1px solid var(--font-color);
-  margin: 15% auto;
+  margin: min(150px, 15%) auto;
   padding: 20px;
   border-radius: 3px;
   max-width: 600px;
