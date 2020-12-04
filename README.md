@@ -1,4 +1,14 @@
-# typeabook
+# Pechatay
+
+Yet another typing trainer
+
+Features: 
+* Single Page Application design
+* Various appearance settings
+
+To be added:
+* Custom books
+* Online typing fight mode
 
 ## Project setup
 ```
