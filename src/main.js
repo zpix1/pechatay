@@ -1,9 +1,8 @@
-import { createApp } from "vue";
-import { createStore } from "vuex";
-import App from "./App.vue";
+import {createApp} from "vue";
+import {createStore} from "vuex";
 
-import router from "./router";
-
+import App from "@/App.vue";
+import router from "@/router";
 import Database from "@/lib/database";
 
 let app = createApp(App);
@@ -45,7 +44,7 @@ const store = createStore({
       state.currentBook = book;
       state.db.setSettingsValue("currentBook", book);
     },
-    setSetting(state, { setting, value }) {
+    setSetting(state, {setting, value}) {
       state.settings[setting] = value;
       state.db.setSettingsValue("settings_" + setting, value);
     }

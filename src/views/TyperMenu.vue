@@ -1,28 +1,32 @@
 <template>
   <div>
     <div v-if="book && text">
-      <div class="book-title">{{ book.title || ''}}</div>
-      <Typer 
-        @update-user-data="updateUserData"
-        :user-data="book.userData"
-        :text="text"
-        :key="update"
+      <div class="book-title">{{ book.title || '' }}</div>
+      <Typer
+          @update-user-data="updateUserData"
+          :user-data="book.userData"
+          :text="text"
+          :key="update"
       />
       <div v-if="book.userData.finished" class="finished">
         <div class="result">
-        You finished with {{ book.userData.totalErrors }} 
-        errors out of {{ book.userData.totalLetters }} 
-        letters ({{ (book.userData.totalErrors * 100 / book.userData.totalLetters).toFixed(2) }}%)
+          You finished with {{ book.userData.totalErrors }}
+          errors out of {{ book.userData.totalLetters }}
+          letters ({{ (book.userData.totalErrors * 100 / book.userData.totalLetters).toFixed(2) }}%)
         </div>
         <span class="g-text-button" @click="restartBook">Type again?</span>
         <div v-if="parentSet" class="footer">
-        <router-link class="prev-chapter g-text-button" :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index - 1].id } }" v-if="parentSet.index - 1 >= 0"> 
-          Prev: {{ parentSet.parent.items[parentSet.index - 1].title }} 
-        </router-link>
-        <router-link class="next-chapter g-text-button" :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index + 1].id } }" v-if="parentSet.index + 1 < parentSet.parent.items.length"> 
-          Next: {{ parentSet.parent.items[parentSet.index + 1].title }} 
-        </router-link>
-      </div>
+          <router-link class="prev-chapter g-text-button"
+                       :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index - 1].id } }"
+                       v-if="parentSet.index - 1 >= 0">
+            Prev: {{ parentSet.parent.items[parentSet.index - 1].title }}
+          </router-link>
+          <router-link class="next-chapter g-text-button"
+                       :to="{ name: 'TyperMenu', params: { id: parentSet.parent.items[parentSet.index + 1].id } }"
+                       v-if="parentSet.index + 1 < parentSet.parent.items.length">
+            Next: {{ parentSet.parent.items[parentSet.index + 1].title }}
+          </router-link>
+        </div>
       </div>
     </div>
     <div v-else>
@@ -33,7 +37,7 @@
 
 <script>
 import Typer from "@/components/Typer";
-import { findParent } from "@/lib/utils.js";
+import {findParent} from "@/lib/utils.js";
 
 export default {
   name: "TyperMenu",

@@ -1,19 +1,19 @@
 <template>
   <div>
     <div class="info">
-      position: {{ pos }}, paragraph: {{ paragaph }}, wpm: {{ 55 }}
+      position: {{ pos }}, paragraph: {{ paragraph }}, wpm: {{ 55 }}
     </div>
     <!-- <div class="typing" v-if="paragaph > 0">
       {{ text[paragaph - 1] }}
     </div> -->
     <div class="example g-typing">
-      <span v-for="(letterEntry, i) in textArray" 
+      <span v-for="(letterEntry, i) in textArray"
             :key="letterEntry.letter + i"
             :class="{
               letter: true,
-              good: letterEntry.state == '+',
-              bad: letterEntry.state == '-',
-              current: letterEntry.state == 'c'
+              good: letterEntry.state === '+',
+              bad: letterEntry.state === '-',
+              current: letterEntry.state === 'c'
             }">
         {{ letterEntry.letter }}
       </span>
@@ -21,19 +21,19 @@
     <!-- <div class="typing" v-if="paragaph + 1 < text.length">
       {{ text[paragaph + 1] }}
     </div> -->
-    <div v-if="!this.stats.finished">
+    <div v-if="!stats.finished">
       <KeygetterVisible
-        v-if="mode === 'Separate window'"
-        :clearv="clearv"
-        @add-letter="addLetter"
-        @remove-letter="removeLetter"
-        :finished="stats.finished"
+          v-if="mode === 'Separate window'"
+          clearHook="clearv"
+          @add-letter="addLetter"
+          @remove-letter="removeLetter"
+          :finished="stats.finished"
       />
-      <KeygetterHidden 
-        v-if="mode === 'In place'"
-        @add-letter="addLetter"
-        @remove-letter="removeLetter"
-        :finished="stats.finished"
+      <KeygetterHidden
+          v-if="mode === 'In place'"
+          @add-letter="addLetter"
+          @remove-letter="removeLetter"
+          :finished="stats.finished"
       />
     </div>
     <!-- <div
@@ -69,8 +69,8 @@ export default {
     return {
       textArray: null,
       pos: 0,
-      paragaph: this.userData.totalParagraphs || 0,
-      clearv: 0,
+      paragraph: this.userData.totalParagraphs || 0,
+      clearHook: 0,
       stats: {
         totalParagraphs: this.userData.totalParagraphs || 0,
         totalLetters: this.userData.totalLetters || 0,
@@ -93,42 +93,42 @@ export default {
     },
     updateTextArray() {
       this.textArray = [];
-      for (let i = 0; i < this.text[this.paragaph].length; i++) {
+      for (let i = 0; i < this.text[this.paragraph].length; i++) {
         this.textArray.push({
-          letter: this.text[this.paragaph][i],
+          letter: this.text[this.paragraph][i],
           state: ""
         });
       }
       this.textArray[0].state = "c";
     },
-    addParagaph() {
-      this.stats.totalErrors += this.textArray.filter(e => e.state == "-").length;
+    addParagraph() {
+      this.stats.totalErrors += this.textArray.filter(e => e.state === "-").length;
       this.stats.totalLetters += this.textArray.length;
 
-      if (this.paragaph + 1 >= this.text.length) {
+      if (this.paragraph + 1 >= this.text.length) {
         this.finishText();
         return;
       }
 
-      this.paragaph++;
+      this.paragraph++;
       this.stats.totalParagraphs++;
 
       this.pos = 0;
 
-      this.clearv++;
+      this.clearHook++;
 
       this.updateTextArray();
       this.emitUpdateUserData();
     },
     addLetter(letter) {
       this.pos++;
-      if (letter == this.textArray[this.pos - 1].letter) {
+      if (letter === this.textArray[this.pos - 1].letter) {
         this.textArray[this.pos - 1].state = "+";
       } else {
         this.textArray[this.pos - 1].state = "-";
       }
       if (this.pos >= this.textArray.length) {
-        this.addParagaph();
+        this.addParagraph();
         return;
       }
       if (this.pos > this.textArray.length) {

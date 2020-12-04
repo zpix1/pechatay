@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from "vue-router";
+import {createWebHistory, createRouter} from "vue-router";
 import TyperMenu from "@/views/TyperMenu.vue";
 import BookSelect from "@/views/BookSelect.vue";
 

@@ -13,13 +13,13 @@
 </template>
 
 <script>
-import { placeCaretAtEnd } from "@/lib/utils";
+import {placeCaretAtEnd} from "@/lib/utils";
 
 export default {
   name: "KeygetterVisible",
   props: {
     finished: Boolean,
-    clearv: Number
+    clearHook: Number
   },
   emits: [
     "add-letter",
@@ -37,9 +37,9 @@ export default {
       if (this.finished) {
         event.preventDefault();
       } else if ([
-          "ArrowRight",
-          "ArrowLeft"
-        ].includes(event.key)) {
+        "ArrowRight",
+        "ArrowLeft"
+      ].includes(event.key)) {
         event.preventDefault();
       } else if ((event.ctrlKey || event.metaKey) && ["c", "v", "a"].includes(event.key)) {
         event.preventDefault();
@@ -47,13 +47,10 @@ export default {
     },
     placeChanged(event) {
       if (event.inputType === "insertText") {
-        // this.addLetter(event.data);
         this.$emit("add-letter", event.data);
       } else if (event.inputType === "insertParagraph") {
-        // this.addLetter('\n');
         this.$emit("add-letter", "\n");
       } else if (event.inputType === "deleteContentBackward") {
-        // this.removeLetter();
         this.$emit("remove-letter");
       }
     },

@@ -1,11 +1,14 @@
 <template>
   <div>
-  <div class="continue-typing">
-    <router-link class="g-text-button continue-typing" v-if="$store.state.currentBook" :to="{ name: 'TyperMenu', params: { id: $store.state.currentBook.id } }">Continue typing ({{ $store.state.currentBook.title }})</router-link>
-  </div>
-  <div v-if="this.$store.state.scheme">
-    <SchemeEntry v-for="set in this.$store.state.scheme.items" :set="set" :key="set.title"/>
-  </div>
+    <div class="continue-typing">
+      <router-link class="g-text-button continue-typing" v-if="$store.state.currentBook"
+                   :to="{ name: 'TyperMenu', params: { id: $store.state.currentBook.id } }">Continue typing
+        ({{ $store.state.currentBook.title }})
+      </router-link>
+    </div>
+    <div v-if="$store.state.scheme">
+      <SchemeEntry v-for="set in $store.state.scheme.items" :set="set" :key="set.title"/>
+    </div>
   </div>
 </template>
 
@@ -15,8 +18,7 @@ import SchemeEntry from "@/components/SchemeEntry";
 export default {
   name: "BookSelect",
   data() {
-    return {
-    };
+    return {};
   },
   components: {
     SchemeEntry

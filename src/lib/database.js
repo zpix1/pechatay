@@ -43,14 +43,14 @@ class Database {
 
             request.onsuccess = (event) => {
               this.db = event.target.result;
-              if (localStorage.getItem(Database.localStorageSchemeKey) != JSON.stringify(json)) {
+              if (localStorage.getItem(Database.localStorageSchemeKey) !== JSON.stringify(json)) {
                 this.generateId2book(json);
                 console.log("pechatayBooksScheme updated, loading texts json");
                 fetch("/texts.json")
                   .then(r => r.json())
                   .then(json => {
                     for (let i = 0; i < json.length; i++) {
-                      const { text, ...other } = json[i];
+                      const {text, ...other} = json[i];
                       let tr = this.db.transaction("bookTexts", "readwrite");
                       let bookTexts = tr.objectStore("bookTexts");
                       bookTexts.put({
@@ -69,7 +69,7 @@ class Database {
             request.onupgradeneeded = (event) => {
               let db = event.target.result;
               if (!db.objectStoreNames.contains("bookTexts")) {
-                db.createObjectStore("bookTexts", { keyPath: "id" });
+                db.createObjectStore("bookTexts", {keyPath: "id"});
               }
             };
           });
@@ -82,28 +82,16 @@ class Database {
   }
 
   getSettingsValue(key) {
-    return JSON.parse(localStorage.getItem(Database.localStorageSettingsKeyPrefix + key, null));
+    return JSON.parse(localStorage.getItem(Database.localStorageSettingsKeyPrefix + key));
   }
 
   setSettingsValue(key, value) {
     return localStorage.setItem(Database.localStorageSettingsKeyPrefix + key, JSON.stringify(value));
   }
 
-  // async listBooks() {
-  //   return new Promise((resolve, reject) => {
-  //     let tr = this.db.transaction('books', 'readonly');
-  //     let books = tr.objectStore('books');
-  //     let request = books.getAll();
-
-  //     request.onerror = reject;
-  //     request.onsuccess = () => resolve(request.result);
-  //   });
-  // }
-
   getBook(id) {
-    console.log("get book", JSON.parse(localStorage.getItem(Database.localStorageBookKeyPrefix + id, null)));
-    return JSON.parse(localStorage.getItem(Database.localStorageBookKeyPrefix + id, null));
-    // !TODO: Each book should have user data (current paragraph, position, total stats)
+    console.log("get book", JSON.parse(localStorage.getItem(Database.localStorageBookKeyPrefix + id)));
+    return JSON.parse(localStorage.getItem(Database.localStorageBookKeyPrefix + id));
     // return this.id2book[id] || null;
     // return new Promise((resolve, reject) => {
     //   let tr = this.db.transaction(['books'], 'readonly');

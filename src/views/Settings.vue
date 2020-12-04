@@ -4,23 +4,23 @@
       <div class="modal-content">
         <span class="close" @click="$emit('close')">&times;</span>
         <div class="header">Settings</div>
-
+        
         <div class="setting-title">Theme</div>
         <div class="select-div">
-        <div v-for="v in $store.state.settingsTemplate.theme" :key="v">
-          <span :class="{ 'g-text-button': true, 'select-option': true, 'active-setting': $store.state.settings.theme == v }"
-                @click="$store.commit('setSetting', {setting: 'theme', value: v})"
-                
+          <div v-for="v in $store.state.settingsTemplate.theme" :key="v">
+          <span
+            :class="{ 'g-text-button': true, 'select-option': true, 'active-setting': $store.state.settings.theme === v }"
+            @click="$store.commit('setSetting', {setting: 'theme', value: v})"
           >{{ v }}</span>
-        </div>
+          </div>
         </div>
 
         <div class="setting-title">Typer font</div>
         <div class="select-div">
           <div v-for="v in $store.state.settingsTemplate.font" :key="v">
-            <span :class="{ 'g-text-button': true, 'select-option': true, 'active-setting': $store.state.settings.font == v }"
-                  @click="$store.commit('setSetting', {setting: 'font', value: v})"
-                  
+            <span
+              :class="{ 'g-text-button': true, 'select-option': true, 'active-setting': $store.state.settings.font === v }"
+              @click="$store.commit('setSetting', {setting: 'font', value: v})"
             >{{ v }}</span>
           </div>
         </div>
@@ -31,9 +31,9 @@
         <div class="setting-title">Type mode</div>
         <div class="select-div">
           <div v-for="v in $store.state.settingsTemplate.typeMode" :key="v">
-            <span :class="{ 'g-text-button': true, 'select-option': true, 'active-setting': $store.state.settings.typeMode == v }"
-                  @click="$store.commit('setSetting', {setting: 'typeMode', value: v})"
-                  
+            <span
+              :class="{ 'g-text-button': true, 'select-option': true, 'active-setting': $store.state.settings.typeMode === v }"
+              @click="$store.commit('setSetting', {setting: 'typeMode', value: v})"
             >{{ v }}</span>
           </div>
         </div>
@@ -51,7 +51,7 @@ export default {
   emits: ["close"],
   methods: {
     outsideClick(event) {
-      if (event.target == this.$refs.modal) {
+      if (event.target === this.$refs.modal) {
         this.$emit("close");
       }
     }
@@ -94,7 +94,7 @@ export default {
   cursor: pointer;
 }
 
-.header { 
+.header {
   font-size: 25px;
   margin-bottom: 10px;
 }
