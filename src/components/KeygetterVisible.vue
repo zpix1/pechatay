@@ -56,7 +56,7 @@ export default {
     },
   },
   watch: {
-    clearv() {
+    clearHook() {
       this.$refs.editable.innerText = "";
     }
   }
