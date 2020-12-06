@@ -2,6 +2,7 @@
   <div>
     <div v-if="book && text">
       <div class="book-title">{{ book.title || '' }}</div>
+      <div class="author" v-if="book.author.length !== 0">{{ book.author }}</div>
       <Typer
           @update-user-data="updateUserData"
           :user-data="book.userData"
@@ -86,8 +87,14 @@ export default {
 <style scoped>
 .book-title {
   font-size: 25px;
+  margin-bottom: 10px;
+}
+
+.author {
+  font-size: 20px;
   margin-bottom: 20px;
 }
+
 
 .prev-chapter {
   float: left;

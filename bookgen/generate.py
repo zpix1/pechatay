@@ -1,6 +1,7 @@
 import os
-from json import dump, dumps
+from json import dump, dumps, loads
 from random import randint
+from textwrap import wrap
 
 BOOKS_DIR = 'texts'
 PUBLIC_TEXTS_FILE = os.path.join('..', 'public', 'texts.json') #'../public/texts.json'
@@ -8,8 +9,18 @@ PUBLIC_SCHEME_FILE = os.path.join('..', 'public', 'scheme.json') #'../public/tex
 
 VERSION = str(randint(1, 10000))
 
-def format_text(text):
-    return list(map(lambda s: s.strip(), text.split('<PAR>')))
+def format_text(text, sep):
+    text = text.replace('ё', 'е')
+    text_list = list(map(lambda s: s.strip(), text.split(sep)))
+    ans_list = []
+    for par in text_list:
+        if len(par) > 1000:
+            ans_list += wrap(par, width=500)
+            print("WARN: Too big par: ", len(par), ", wrapped.")
+        else:
+            ans_list += [par]
+    return ans_list
+
 
 def get_book_set(root, pre, textstore):
     for name in os.listdir(os.path.join(*pre)):
@@ -24,18 +35,18 @@ def get_book_set(root, pre, textstore):
         else:
             f = open(os.path.join(*pre, name))
             id = name.replace('.txt', '')
-            title = f.readline().strip()
-            author = f.readline().strip()
+            data = loads(f.readline().strip())
+
             text = f.read()
             root.append({
                 "id": id,
                 "type": "book",
-                "title": title,
-                "author": author
+                "title": data["title"],
+                "author": data["author"]
             })
             textstore.append({
                  "id": id,
-                 "text": format_text(text)
+                 "text": format_text(text, data["sep"])
             })
 
 root = {

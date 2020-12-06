@@ -19,9 +19,10 @@ class Database {
         this.generateId2book(scheme.items[i]);
       }
     } else {
+      let userBook = this.getBook(scheme.id);
       this.setBook(scheme.id, {
         ...scheme,
-        userData: (this.id2book[scheme.id] ? this.id2book[scheme.id] || {} : {})
+        userData: (userBook ? userBook.userData || {} : {})
       });
     }
   }
