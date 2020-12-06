@@ -1,6 +1,7 @@
 {
     "type": "set",
-    "title": "Все",
+    "title": "All",
+    "version": "5767",
     "items": [
         {
             "type": "set",
@@ -8,8 +9,9 @@
             "items": [
                 {
                     "id": "fragment0kafka0",
+                    "type": "book",
                     "title": "Превращение",
-                    "type": "book"
+                    "author": "Франц Кафка"
                 }
             ]
         },
@@ -18,19 +20,10 @@
             "title": "Уроки",
             "items": [
                 {
-                    "id": "sample0",
-                    "title": "Тестовый текст",
-                    "type": "book"
-                },
-                {
-                    "id": "lesson1",
+                    "id": "lesson0",
+                    "type": "book",
                     "title": "Урок 1: фыва олдж",
-                    "type": "book"
-                },
-                {
-                    "id": "lesson2",
-                    "title": "Урок 2: п р",
-                    "type": "book"
+                    "author": ""
                 }
             ]
         }

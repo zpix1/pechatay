@@ -24,8 +24,8 @@
             >{{ v }}</span>
           </div>
         </div>
-        <p class="g-typing">
-          Алая вспышка осветила силуэт зазубренного крыла...
+
+        <p class="g-typing">Алая вспышка осветила силуэт зазубренного крыла.&para;<br>New line enlish text
         </p>
 
         <div class="g-subtitle">Type mode</div>

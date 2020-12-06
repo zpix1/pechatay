@@ -1,9 +1,10 @@
 <template>
   <div>
     <div class="info">
-      position: {{ pos }}, paragraph: {{ paragraph }}, <span v-if="hideTime" @click="hideTime = false">time stats hidden</span>
+      position: {{ pos }}, paragraph: {{ paragraph + 1 }}/{{ paragraphLength }}, <span v-if="hideTime"
+                                                                                       @click="hideTime = false">time stats hidden</span>
       <span v-else @click="hideTime = true">wpm: {{ wpm.toFixed(1) }}, time: {{ (currentMs / 1000).toFixed(1) }}</span>
-<!--      <span @click="hideTime = !hideTime" class="g-text-button">{{ hideTime ? "show time stats" : "hide time stats" }}</span><br>-->
+      <!--      <span @click="hideTime = !hideTime" class="g-text-button">{{ hideTime ? "show time stats" : "hide time stats" }}</span><br>-->
     </div>
     <!-- <div class="typing" v-if="paragaph > 0">
       {{ text[paragaph - 1] }}
@@ -17,7 +18,7 @@
               bad: letterEntry.state === '-',
               current: letterEntry.state === 'c'
             }">
-        {{ letterEntry.letter }}
+        {{ letterEntry.letter === 'NEWLINE' ? "&para;\n" : letterEntry.letter }}
       </span>
     </div>
     <!-- <div class="typing" v-if="paragaph + 1 < text.length">
@@ -25,17 +26,17 @@
     </div> -->
     <div v-if="!stats.finished">
       <KeygetterVisible
-          v-if="mode === 'Separate window'"
-          clearHook="clearHook"
-          @add-letter="addLetter"
-          @remove-letter="removeLetter"
-          :finished="stats.finished"
+        v-if="mode === 'Separate window'"
+        clearHook="clearHook"
+        @add-letter="addLetter"
+        @remove-letter="removeLetter"
+        :finished="stats.finished"
       />
       <KeygetterHidden
-          v-if="mode === 'In place'"
-          @add-letter="addLetter"
-          @remove-letter="removeLetter"
-          :finished="stats.finished"
+        v-if="mode === 'In place'"
+        @add-letter="addLetter"
+        @remove-letter="removeLetter"
+        :finished="stats.finished"
       />
     </div>
     <!-- <div
@@ -72,6 +73,7 @@ export default {
       textArray: null,
       pos: 0,
       paragraph: this.userData.totalParagraphs || 0,
+      paragraphLength: 0,
 
       stats: {
         totalMs: this.userData.totalMs || 0,
@@ -92,6 +94,7 @@ export default {
   },
   emits: ["update-user-data"],
   mounted() {
+    this.paragraphLength = this.text.length;
     this.updateTextArray();
   },
   methods: {
@@ -105,10 +108,18 @@ export default {
     updateTextArray() {
       this.textArray = [];
       for (let i = 0; i < this.text[this.paragraph].length; i++) {
-        this.textArray.push({
-          letter: this.text[this.paragraph][i],
-          state: ""
-        });
+        let letter = this.text[this.paragraph][i];
+        if (letter === "\n") {
+          this.textArray.push({
+            letter: "NEWLINE",
+            state: ""
+          });
+        } else {
+          this.textArray.push({
+            letter: letter,
+            state: ""
+          });
+        }
       }
       this.textArray[0].state = "c";
     },
@@ -145,7 +156,9 @@ export default {
     },
     addLetter(letter) {
       this.pos++;
-      if (letter === this.textArray[this.pos - 1].letter) {
+      if ((letter === this.textArray[this.pos - 1].letter) || (
+        letter === "\n" && this.textArray[this.pos - 1].letter === "NEWLINE"
+      )) {
         this.textArray[this.pos - 1].state = "+";
       } else {
         this.textArray[this.pos - 1].state = "-";

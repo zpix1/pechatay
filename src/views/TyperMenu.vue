@@ -58,8 +58,8 @@ export default {
   mounted() {
     this.book = this.$store.state.db.getBook(this.$route.params.id);
     this.$store.commit("setCurrentBook", this.book);
-    this.$store.state.db.getBookText(this.$route.params.id).then(unformattedText => {
-      this.text = unformattedText.split("\n");
+    this.$store.state.db.getBookText(this.$route.params.id).then(text => {
+      this.text = text;
     });
     this.parentSet = findParent(this.$store.state.db.getScheme(), this.$route.params.id);
   },

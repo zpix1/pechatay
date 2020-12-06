@@ -56,4 +56,7 @@ a {
   line-height: normal;
   border-radius: 3px;
   outline: 0;
+
+  white-space: pre-wrap;
+  overflow-wrap: normal;
 }

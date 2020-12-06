@@ -90,13 +90,12 @@ class Database {
   }
 
   getBook(id) {
-    console.log("get book", JSON.parse(localStorage.getItem(Database.localStorageBookKeyPrefix + id)));
     return JSON.parse(localStorage.getItem(Database.localStorageBookKeyPrefix + id));
     // return this.id2book[id] || null;
     // return new Promise((resolve, reject) => {
-    //   let tr = this.db.transaction(['books'], 'readonly');
-    //   let books = tr.objectStore('books');
-    //   let request = books.get(id);
+    //   let tr = this.db.transaction(['texts'], 'readonly');
+    //   let texts = tr.objectStore('texts');
+    //   let request = texts.get(id);
 
     //   request.onerror = reject;
     //   request.onsuccess = () => resolve(request.result);
@@ -104,7 +103,6 @@ class Database {
   }
 
   setBook(id, book) {
-    console.log("set book", book);
     localStorage.setItem(Database.localStorageBookKeyPrefix + id, JSON.stringify(book));
   }
 
