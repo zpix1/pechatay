@@ -1,6 +1,7 @@
 import {createWebHistory, createRouter} from "vue-router";
 import TyperMenu from "@/views/TyperMenu.vue";
 import BookSelect from "@/views/BookSelect.vue";
+import OnlineTyperMenu from "@/views/OnlineTyperMenu";
 import About from "@/views/About";
 
 const routes = [
@@ -13,6 +14,12 @@ const routes = [
     path: "/typer/:id",
     name: "TyperMenu",
     component: TyperMenu,
+    props: true
+  },
+  {
+    path: "/fight",
+    name: "OnlineTyperMenu",
+    component: OnlineTyperMenu,
     props: true
   },
   {

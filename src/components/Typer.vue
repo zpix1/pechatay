@@ -12,13 +12,13 @@
     <div class="example g-typing">
       <span v-for="(letterEntry, i) in textArray"
             :key="letterEntry.letter + i"
+            v-html="convertLetter(letterEntry.letter)"
             :class="{
               letter: true,
               good: letterEntry.state === '+',
               bad: letterEntry.state === '-',
               current: letterEntry.state === 'c'
             }">
-        {{ letterEntry.letter === 'NEWLINE' ? "&para;\n" : letterEntry.letter }}
       </span>
     </div>
     <!-- <div class="typing" v-if="paragaph + 1 < text.length">
@@ -188,6 +188,9 @@ export default {
       }
       this.textArray[this.pos + 1].state = "e";
       this.textArray[this.pos].state = "c";
+    },
+    convertLetter(letter) {
+      return letter === "NEWLINE" ? "&para;\n" : letter;
     }
   },
   computed: {
