@@ -28,8 +28,7 @@ export default {
       sessionInfo: null,
       playersPos: {
         0: {
-          0: 2,
-          12: 3
+          1: 5
         }
       }
     };
@@ -54,6 +53,10 @@ export default {
       this.state = "fight";
       this.sessionInfo = this.getSessionInfo();
       this.text = this.sessionInfo.text;
+
+      setInterval(() => {
+        this.playersPos[0][1] = (this.playersPos[0][1] + 1) % this.text[0].length;
+      }, 300);
     }
   }
 };
