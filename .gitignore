@@ -23,3 +23,6 @@ pnpm-debug.log*
 *.sw?
 
 package-lock.json
+
+public/scheme.json
+public/texts.json
