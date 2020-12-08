@@ -1,4 +1,4 @@
-<template>
+<template>b
   <div
     contenteditable="true"
     class="g-typing"

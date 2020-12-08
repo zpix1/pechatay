@@ -3,7 +3,7 @@
     <div class="example g-typing">
       <span v-for="(letterEntry, i) in textArray"
             :key="letterEntry.letter + i"
-            v-html="convertLetter(letterEntry.letter)"
+            v-html="dummy ? convertDummy(convertLetter(letterEntry.letter)) : convertLetter(letterEntry.letter)"
             :data-text="getPlayerByPos(i) ? 'P'+getPlayerByPos(i) : null"
             :class="{
               letter: true,
@@ -15,19 +15,19 @@
       </span>
     </div>
 
-    <div v-if="!stats.finished">
+    <div v-if="!blocked">
       <KeygetterVisible
         v-if="mode === 'Separate window'"
         clearHook="clearHook"
         @add-letter="addLetter"
         @remove-letter="removeLetter"
-        :finished="stats.finished"
+        :finished="blocked"
       />
       <KeygetterHidden
         v-if="mode === 'In place'"
         @add-letter="addLetter"
         @remove-letter="removeLetter"
-        :finished="stats.finished"
+        :finished="blocked"
       />
     </div>
   </div>
@@ -39,9 +39,17 @@ import Typer from "@/components/Typer";
 export default {
   mixins: [Typer],
   props: {
-    playersPos: Object
+    playersPos: Object,
+    dummy: Boolean,
+    blocked: Boolean
   },
   methods: {
+    convertDummy(letter) {
+      if (letter === " " || letter === "\n") {
+        return letter;
+      }
+      return "&bull;";
+    },
     getLetterOffsetClass(letter) {
       if (letter === "й") {
         return "above-lower";
@@ -63,11 +71,10 @@ export default {
       }
     },
     getPlayerByPos(pos) {
-
       if (this.playersPos[this.paragraph]) {
         for (let p in this.playersPos[this.paragraph]) {
           if (this.playersPos[this.paragraph][p] === pos) {
-            return p;
+            return parseInt(p).toString();
           }
         }
       }

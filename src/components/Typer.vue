@@ -92,7 +92,7 @@ export default {
       clearHook: 0
     };
   },
-  emits: ["update-user-data"],
+  emits: ["update-user-data", "finish", "position-update"],
   mounted() {
     this.paragraphLength = this.text.length;
     this.updateTextArray();
@@ -103,6 +103,7 @@ export default {
     },
     finishText() {
       this.stats.finished = true;
+      this.$emit("finish", this.stats);
       this.emitUpdateUserData();
     },
     updateTextArray() {
@@ -210,6 +211,12 @@ export default {
       this.pos = 0;
       this.updateTextArray();
       this.emitUpdateUserData();
+    },
+    pos(value) {
+      this.$emit("position-update", {
+        pos: value,
+        paragraph: this.paragraph
+      });
     },
     state(value) {
       if (value === "started") {

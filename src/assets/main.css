@@ -38,6 +38,7 @@ a {
 }
 
 .g-text-button {
+  display: inline;
   text-decoration: none;
   cursor: pointer;
   color: var(--font-color);
