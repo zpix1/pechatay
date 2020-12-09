@@ -37,6 +37,9 @@
             >{{ v }}</span>
           </div>
         </div>
+
+        <div class="g-subtitle">Online mode nickname</div>
+        <input class="select-div" type="text" v-model="username"/>
       </div>
     </div>
   </div>
@@ -48,12 +51,22 @@ export default {
   props: {
     modal: Boolean,
   },
+  data() {
+    return {
+      username: this.$store.state.settings.username
+    };
+  },
   emits: ["close"],
   methods: {
     outsideClick(event) {
       if (event.target === this.$refs.modal) {
         this.$emit("close");
       }
+    }
+  },
+  watch: {
+    username(value) {
+      this.$store.commit("setSetting", {setting: "username", value: value});
     }
   }
 };

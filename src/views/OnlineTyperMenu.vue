@@ -9,8 +9,8 @@
 
         <div class="g-header">Fight "{{ sessionInfo.title }}"</div>
         <div>
-          Players: {{ sessionInfo.players }}<br>
-          You: {{ sessionInfo.you }}
+          Players: {{ playersList.join(", ") }}<br>
+          You: {{ sessionInfo.id2username[userId] }}
         </div>
 
         <div v-if="isState('preparing-to-start')">
@@ -22,7 +22,7 @@
           </div>
         </div>
 
-        <div v-if="sessionInfo.you === 1 && isState('not-started')"
+        <div v-if="isAdmin && isState('not-started')"
              class="g-text-button"
              @click="sendPrepareStart">
           Start?
@@ -31,10 +31,12 @@
         <OnlineTyper
           @finish="finishBefore"
           @position-update="sendPlayerPos"
+          :userId="userId"
+          :id2username="sessionInfo.id2username"
           :dummy="isState('not-started')"
           :blocked="!isState('started')"
           :text="text" :user-data="usedData"
-          :players-pos="playersPos"
+          :players-pos="(isState('started') || isState('finished')) ? playersPos : {}"
         />
 
         <div v-if="isState('finished-all')">
@@ -80,6 +82,8 @@ export default {
       sessionId: "13ccd9ab-c1cc-4c0e-84d0-a825dd6ebb6b",
       socket: io(process.env.VUE_APP_SOCKETIO_URL),
       text: null,
+      userId: null,
+      isAdmin: null,
       usedData: {},
       state: "loading",
       sessionInfo: null,
@@ -102,9 +106,11 @@ export default {
     },
     requestInitiation() {
       // TODO: use session id
-      this.socket.emit("init", this.sessionId, (response) => {
+      this.socket.emit("init", this.sessionId, this.$store.state.settings.username, (response) => {
         console.log("sessionInfo", response);
         this.sessionInfo = response;
+        this.userId = response.userId;
+        this.isAdmin = response.isAdmin;
         this.state = response.state;
         this.init();
       });
@@ -130,16 +136,19 @@ export default {
       if (this.state !== data.state) {
         console.error(`You have bad state, server state ${data.state}, your state: ${this.state}`);
       }
+
+      console.log(data);
+      if (data.sessionInfo) {
+        console.log(data);
+        this.sessionInfo = data.sessionInfo;
+      }
+
       // console.log("alive", data);
       this.playersPos = {};
       for (let p in data.playersPos) {
-        if (p !== this.sessionInfo.myId) {
+        if (p !== this.userId) {
           this.playersPos[p] = data.playersPos[p];
         }
-      }
-
-      if (data.sessionInfo) {
-        this.sessionInfo = data.sessionInfo;
       }
     },
     prepareStart() {
@@ -212,6 +221,15 @@ export default {
       this.socket.on("prepare-start", this.prepareStart);
       this.socket.on("finish-all", this.finishAll);
       this.socket.on("start", this.start);
+    }
+  },
+  computed: {
+    playersList() {
+      let res = [];
+      for (let p in this.sessionInfo.playersPos) {
+        res.push(this.sessionInfo.id2username[p]);
+      }
+      return res;
     }
   }
 };

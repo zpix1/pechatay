@@ -4,13 +4,13 @@
       <span v-for="(letterEntry, i) in textArray"
             :key="letterEntry.letter + i"
             v-html="dummy ? convertDummy(convertLetter(letterEntry.letter)) : convertLetter(letterEntry.letter)"
-            :data-text="getPlayerByPos(i) ? 'P'+getPlayerByPos(i) : null"
+            :data-text="(player = getPlayerByPos(i)) ? player : null"
             :class="{
               letter: true,
               good: letterEntry.state === '+',
               bad: letterEntry.state === '-',
               current: letterEntry.state === 'c',
-              ['player p' + getPlayerByPos(i) + ' ' + getLetterOffsetClass(letterEntry.letter)]: getPlayerByPos(i),
+              ['player p' + player + ' ' + getLetterOffsetClass(letterEntry.letter)]: player,
             }">
       </span>
     </div>
@@ -41,7 +41,9 @@ export default {
   props: {
     playersPos: Object,
     dummy: Boolean,
-    blocked: Boolean
+    blocked: Boolean,
+    userId: String,
+    id2username: Object
   },
   methods: {
     convertDummy(letter) {
@@ -72,9 +74,10 @@ export default {
     },
     getPlayerByPos(pos) {
       for (let player in this.playersPos) {
-        if (this.playersPos[player][0] === pos && this.playersPos[player][1] === this.paragraph) {
-          console.log("found");
-          return player;
+        if (player !== this.userId) {
+          if (this.playersPos[player][0] === pos && this.playersPos[player][1] === this.paragraph) {
+            return this.id2username[player].slice(0, 2).toUpperCase();
+          }
         }
       }
       return undefined;
