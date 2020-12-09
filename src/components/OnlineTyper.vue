@@ -71,14 +71,21 @@ export default {
       }
     },
     getPlayerByPos(pos) {
-      if (this.playersPos[this.paragraph]) {
-        for (let p in this.playersPos[this.paragraph]) {
-          if (this.playersPos[this.paragraph][p] === pos) {
-            return parseInt(p).toString();
-          }
+      for (let player in this.playersPos) {
+        if (this.playersPos[player][0] === pos && this.playersPos[player][1] === this.paragraph) {
+          console.log("found");
+          return player;
         }
       }
       return undefined;
+      // if (this.playersPos[this.paragraph]) {
+      //   for (let p in this.playersPos[this.paragraph]) {
+      //     if (this.playersPos[this.paragraph][p] === pos) {
+      //       return parseInt(p).toString();
+      //     }
+      //   }
+      // }
+      // return undefined;
     }
   },
   name: "OnlineTyper"
