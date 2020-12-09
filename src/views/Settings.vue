@@ -38,8 +38,8 @@
           </div>
         </div>
 
-        <div class="g-subtitle">Online mode nickname</div>
-        <input class="select-div" type="text" v-model="username"/>
+        <div class="g-subtitle">Fight mode nickname</div>
+        <span style="display: flex"><input style="width: 100%;" class="select-div" type="text" v-model="username"/></span>
       </div>
     </div>
   </div>
@@ -87,7 +87,8 @@ export default {
 .modal-content {
   background-color: var(--main-color);
   border: 1px solid var(--font-color);
-  margin: min(150px, 15%) auto;
+  /*margin-top: min(150px, 15%);*/
+  margin: min(150px, 10vh) auto;
   padding: 20px;
   border-radius: 3px;
   max-width: 600px;
