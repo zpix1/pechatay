@@ -45,6 +45,13 @@ export default {
     userId: String,
     id2username: Object
   },
+  watch: {
+    blocked(value) {
+      if (!value) {
+        this.state = "started";
+      }
+    }
+  },
   methods: {
     convertDummy(letter) {
       if (letter === " " || letter === "\n") {

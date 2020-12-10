@@ -175,7 +175,6 @@ export default {
         this.textArray[this.pos].state = "c";
         if (this.state === "not-started") {
           this.state = "started";
-          this.startTime = new Date();
         }
       }
     },
@@ -220,12 +219,11 @@ export default {
     },
     state(value) {
       if (value === "started") {
-        console.log("started");
+        this.startTime = new Date();
         this.updateTimeIntervalId = setInterval(() => {
           this.updateTime();
         }, 500);
       } else {
-        console.log("removed");
         clearInterval(this.updateTimeIntervalId);
       }
     }

@@ -35,17 +35,18 @@
           :id2username="sessionInfo.id2username"
           :dummy="isState('not-started')"
           :blocked="!isState('started')"
-          :text="text" :user-data="usedData"
+          :text="text"
+          :user-data="{}"
           :players-pos="(isState('started') || isState('finished')) ? playersPos : {}"
         />
 
-        <div v-if="isState('finished-all')">
-          Game ended!<br>
-          <!--      TODO: implement nice results view -->
-          Results: {{ results }}
-        </div>
-        <div v-if="isState('finished-before')">
-          Well done! You've finished, please, wait other players
+        <div v-if="sessionInfo.winners.length !== 0">
+          Results:
+          <ul>
+            <li v-for="winner in sessionInfo.winners" :key="winner.userId">
+              {{ winner }}
+            </li>
+          </ul>
         </div>
 
       </div>
@@ -84,12 +85,10 @@ export default {
       text: null,
       userId: null,
       isAdmin: null,
-      usedData: {},
       state: "loading",
       sessionInfo: null,
       prepareStartCountdown: startCountdown,
       playersPos: {},
-      results: null,
       loading: true
     };
   },
@@ -120,12 +119,11 @@ export default {
       this.prepareStart();
     },
     sendPlayerPos(positionData) {
-      console.log(`Pos emit: ${positionData.pos}: ${positionData.paragraph}`);
       this.socket.emit("new-position", [positionData.pos, positionData.paragraph]);
     },
-    sendFinishEvent() {
-      console.log("you finished", this.userData);
-      this.socket.emit("finished", this.userData);
+    sendFinishEvent(stats) {
+      console.log("you finished", stats);
+      this.socket.emit("finished", stats);
     },
 
     // Socket listeners
@@ -133,17 +131,14 @@ export default {
       this.text = this.sessionInfo.text;
     },
     update(data) {
-      if (this.state !== data.state) {
-        console.error(`You have bad state, server state ${data.state}, your state: ${this.state}`);
-      }
+      // if (this.state !== data.state) {
+      //   console.error(`You have bad state, server state ${data.state}, your state: ${this.state}`);
+      // }
 
-      console.log(data);
       if (data.sessionInfo) {
-        console.log(data);
         this.sessionInfo = data.sessionInfo;
       }
 
-      // console.log("alive", data);
       this.playersPos = {};
       for (let p in data.playersPos) {
         if (p !== this.userId) {
@@ -201,12 +196,8 @@ export default {
       // }, 10000);
     },
     finishBefore(stats) {
-      this.state = "finished-before";
+      this.state = "finished";
       this.sendFinishEvent(stats);
-    },
-    finishAll(results) {
-      this.state = "finished-all";
-      this.results = results;
     }
   },
   created() {
@@ -219,7 +210,7 @@ export default {
       this.requestInitiation();
       this.socket.on("update", this.update);
       this.socket.on("prepare-start", this.prepareStart);
-      this.socket.on("finish-all", this.finishAll);
+      // this.socket.on("finish", this.finishAll);
       this.socket.on("start", this.start);
     }
   },
