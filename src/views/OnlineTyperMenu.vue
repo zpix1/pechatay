@@ -3,10 +3,16 @@
     <div v-if="isState('loading')">
       Loading...
     </div>
+    <div v-else-if="isState('error')">
+      Error: {{ error }}
+    </div>
+    <div v-else-if="isState('new-session')">
+      <div class="g-header">New session</div>
+      <div class="g-text-button" @click="requestNewSession">create a new session from random text</div>
+    </div>
     <div v-else>
       State: {{ state }}<br>
-      <div v-if="!isState('create-session')">
-
+      <div>
         <div class="g-header">Fight "{{ sessionInfo.title }}"</div>
         <div>
           Players: {{ playersList.join(", ") }}<br>
@@ -43,15 +49,16 @@
         <div v-if="sessionInfo.winners.length !== 0">
           Results:
           <ul>
-            <li v-for="winner in sessionInfo.winners" :key="winner.userId">
-              {{ winner }}
+            <li v-for="(winner,i) in sessionInfo.winners" :key="winner.userId" :class="{ winner: i === 0}">
+<!--              {{ winner }}-->
+              {{ i + 1 }}.
+              {{ winner.username  }} finished with {{ winner.results.totalErrors }}
+              errors out of {{ winner.results.totalLetters }}
+              letters ({{ (winner.results.totalErrors * 100 / winner.results.totalLetters).toFixed(2) }}%).
             </li>
           </ul>
         </div>
 
-      </div>
-      <div v-else-if="isState('new-session')">
-        <div class="g-header">New session</div>
       </div>
     </div>
   </div>
@@ -89,7 +96,8 @@ export default {
       sessionInfo: null,
       prepareStartCountdown: startCountdown,
       playersPos: {},
-      loading: true
+      loading: true,
+      error: ""
     };
   },
   methods: {
@@ -100,13 +108,21 @@ export default {
     // Socket emitters
     requestNewSession() {
       this.socket.emit("new-session", (response) => {
-        this.sessionId = response.sid;
+        console.log(response);
+        // this.sessionId = response.sid;
+        this.$router.push({ name: "OnlineTyperMenu", params: { id: response.sid } });
+        // this.requestInitiation();
       });
     },
     requestInitiation() {
       // TODO: use session id
       this.socket.emit("init", this.sessionId, this.$store.state.settings.username, (response) => {
         console.log("sessionInfo", response);
+        if (response.error) {
+          this.state = "error";
+          this.error = response.error;
+          return;
+        }
         this.sessionInfo = response;
         this.userId = response.userId;
         this.isAdmin = response.isAdmin;
@@ -202,15 +218,14 @@ export default {
   },
   created() {
     // TODO: implement sockets and backend
-    let sessionId = this.$route.params.id;
-    if (sessionId) {
-      this.state = "create-session";
+    this.sessionId = this.$route.params.id;
+    if (this.sessionId === "new") {
+      this.state = "new-session";
       // TODO: implement session creation
     } else {
       this.requestInitiation();
       this.socket.on("update", this.update);
       this.socket.on("prepare-start", this.prepareStart);
-      // this.socket.on("finish", this.finishAll);
       this.socket.on("start", this.start);
     }
   },
@@ -227,5 +242,7 @@ export default {
 </script>
 
 <style scoped>
-
+.winner {
+  font-weight: 500;
+}
 </style>

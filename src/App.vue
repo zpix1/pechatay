@@ -7,7 +7,7 @@
           <span class="header">Pechatay</span>
           <router-link class="g-text-button" to="/">Book select</router-link>
           |
-          <router-link class="g-text-button" to="/fight/"
+          <router-link class="g-text-button" to="/fight/new"
             >Fight online</router-link
           >
           |

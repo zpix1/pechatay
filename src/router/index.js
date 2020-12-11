@@ -17,7 +17,7 @@ const routes = [
     props: true
   },
   {
-    path: "/fight",
+    path: "/fight/:id",
     name: "OnlineTyperMenu",
     component: OnlineTyperMenu,
     props: true

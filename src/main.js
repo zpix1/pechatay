@@ -43,7 +43,6 @@ const store = createStore({
             state.settings[k] = state.settingsTemplate[k][0];
           }
         } else {
-          console.log(userRes !== null);
           if (userRes !== null) {
             state.settings[k] = userRes;
           } else {
