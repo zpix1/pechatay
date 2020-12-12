@@ -50,11 +50,12 @@
           Results:
           <ul>
             <li v-for="(winner,i) in sessionInfo.winners" :key="winner.userId" :class="{ winner: i === 0}">
-<!--              {{ winner }}-->
+              <!--              {{ winner }}-->
               {{ i + 1 }}.
-              {{ winner.username  }} finished with {{ winner.results.totalErrors }}
+              {{ winner.username }} finished with {{ winner.results.totalErrors }}
               errors out of {{ winner.results.totalLetters }}
               letters ({{ (winner.results.totalErrors * 100 / winner.results.totalLetters).toFixed(2) }}%).
+              WPM: {{ winner.results.wpmWithFine }}.
             </li>
           </ul>
         </div>
@@ -109,13 +110,13 @@ export default {
     requestNewSession() {
       this.socket.emit("new-session", (response) => {
         console.log(response);
-        // this.sessionId = response.sid;
-        this.$router.push({ name: "OnlineTyperMenu", params: { id: response.sid } });
-        // this.requestInitiation();
+        this.$router.push({
+          name: "OnlineTyperMenu",
+          params: {id: response.sessionId}
+        });
       });
     },
     requestInitiation() {
-      // TODO: use session id
       this.socket.emit("init", this.sessionId, this.$store.state.settings.username, (response) => {
         console.log("sessionInfo", response);
         if (response.error) {
@@ -228,6 +229,9 @@ export default {
       this.socket.on("prepare-start", this.prepareStart);
       this.socket.on("start", this.start);
     }
+  },
+  unmounted() {
+    this.socket.disconnect();
   },
   computed: {
     playersList() {

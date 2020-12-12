@@ -1,3 +1,5 @@
+import {LETTERS_IN_WORD} from "@/lib/constants";
+
 export function findParent(scheme, id) {
   for (let i = 0; i < scheme.items.length; i++) {
     if (scheme.items[i].type === "set") {
@@ -37,7 +39,7 @@ export function placeCaretAtEnd(el) {
 
 export function getWPM(totalMs, totalLetters) {
   if (totalMs !== 0) {
-    return (totalLetters / 5) / (totalMs / 1000 / 60);
+    return (totalLetters / LETTERS_IN_WORD) / (totalMs / 1000 / 60);
   } else {
     return 0;
   }
