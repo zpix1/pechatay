@@ -1,5 +1,5 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap'); */
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&family=Roboto:wght@300;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&family=Roboto:wght@300;400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&family=JetBrains+Mono:wght@300&family=Roboto+Mono:wght@300&family=Source+Code+Pro:wght@300;400&display=swap');
 
 body, html, #app, .pseudobody {
@@ -24,6 +24,10 @@ body {
 
 a {
   color: black;
+}
+
+.g-label {
+  padding-bottom: 7px;
 }
 
 .g-header {
@@ -60,4 +64,20 @@ a {
 
   white-space: pre-wrap;
   overflow-wrap: normal;
+}
+
+.g-button {
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 3px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.g-button.disabled {
+  pointer-events: none;
+  opacity: 0.6;
 }

@@ -1,19 +1,24 @@
 <template>
   <div>
     <div v-if="isState('loading')">
-      Loading...
+      Connection to server...
     </div>
     <div v-else-if="isState('error')">
       Error: {{ error }}
     </div>
     <div v-else-if="isState('new-session')">
       <div class="g-header">New session</div>
-      <div class="g-text-button" @click="requestNewSession">create a new session from random text</div>
+      <div class="g-subtitle">Random text mode</div>
+      <div class="g-button" @click="requestNewSession(null)">create</div>
+      <div class="g-subtitle">Custom text mode</div>
+      <div class="g-label">your text</div>
+      <div class="g-typing" contenteditable="true" ref="userText" @input="userCustomText = $refs.userText.innerText"></div>
+      <div :class="{ 'g-button': true, disabled: userCustomText.length < 5 || userCustomText.length > 2000 }" @click="requestNewSession($refs.userText.innerText)">create</div>
     </div>
     <div v-else>
       State: {{ state }}<br>
       <div>
-        <div class="g-header">Fight "{{ sessionInfo.title }}"</div>
+        <div class="g-header">{{ sessionInfo.title }} {{ sessionInfo.mode }}</div>
         <div>
           Players: {{ playersList.join(", ") }}<br>
           You: {{ sessionInfo.id2username[userId] }}
@@ -48,16 +53,15 @@
 
         <div v-if="sessionInfo.winners.length !== 0">
           Results:
-          <ul>
+          <ol class="results">
             <li v-for="(winner,i) in sessionInfo.winners" :key="winner.userId" :class="{ winner: i === 0}">
               <!--              {{ winner }}-->
-              {{ i + 1 }}.
-              {{ winner.username }} finished with {{ winner.results.totalErrors }}
+              <span style="font-weight: 400;">{{ winner.username }}</span> finished with {{ winner.results.totalErrors }}
               errors out of {{ winner.results.totalLetters }}
               letters ({{ (winner.results.totalErrors * 100 / winner.results.totalLetters).toFixed(2) }}%).
-              WPM: {{ winner.results.wpmWithFine }}.
+              WPM: {{ winner.results.wpmWithFine.toFixed(0) }}.
             </li>
-          </ul>
+          </ol>
         </div>
 
       </div>
@@ -97,8 +101,8 @@ export default {
       sessionInfo: null,
       prepareStartCountdown: startCountdown,
       playersPos: {},
-      loading: true,
-      error: ""
+      error: "",
+      userCustomText: ""
     };
   },
   methods: {
@@ -107,9 +111,8 @@ export default {
     },
 
     // Socket emitters
-    requestNewSession() {
-      this.socket.emit("new-session", (response) => {
-        console.log(response);
+    requestNewSession(text) {
+      this.socket.emit("new-session", text, (response) => {
         this.$router.push({
           name: "OnlineTyperMenu",
           params: {id: response.sessionId}
@@ -148,10 +151,6 @@ export default {
       this.text = this.sessionInfo.text;
     },
     update(data) {
-      // if (this.state !== data.state) {
-      //   console.error(`You have bad state, server state ${data.state}, your state: ${this.state}`);
-      // }
-
       if (data.sessionInfo) {
         this.sessionInfo = data.sessionInfo;
       }
@@ -218,17 +217,17 @@ export default {
     }
   },
   created() {
-    // TODO: implement sockets and backend
     this.sessionId = this.$route.params.id;
-    if (this.sessionId === "new") {
-      this.state = "new-session";
-      // TODO: implement session creation
-    } else {
-      this.requestInitiation();
-      this.socket.on("update", this.update);
-      this.socket.on("prepare-start", this.prepareStart);
-      this.socket.on("start", this.start);
-    }
+    this.socket.on("connect", () => {
+      if (this.sessionId === "new") {
+        this.state = "new-session";
+      } else {
+        this.requestInitiation();
+        this.socket.on("update", this.update);
+        this.socket.on("prepare-start", this.prepareStart);
+        this.socket.on("start", this.start);
+      }
+    });
   },
   unmounted() {
     this.socket.disconnect();
@@ -241,12 +240,20 @@ export default {
       }
       return res;
     }
+  },
+  watch: {
+    userCustomText(v) {
+      console.log(v);
+    }
   }
 };
 </script>
 
 <style scoped>
 .winner {
-  font-weight: 500;
+  text-decoration: underline;
+}
+.results {
+  margin-top: 10px;
 }
 </style>
