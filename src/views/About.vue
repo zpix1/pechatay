@@ -33,7 +33,7 @@
     Where my results and custom books are saved?
   </p>
   <p class="answer">
-    All your stats and books are saved locally, so don't worry about progress.
+    All your stats and books are saved locally, so don't worry about losing progress.
   </p>
 
   <p class="question">

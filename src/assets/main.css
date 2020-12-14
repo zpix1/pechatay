@@ -1,6 +1,6 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&family=Roboto:wght@300;400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&family=JetBrains+Mono:wght@300&family=Roboto+Mono:wght@300&family=Source+Code+Pro:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&family=JetBrains+Mono:wght@300;400&family=Roboto+Mono:wght@300;400&family=Source+Code+Pro:wght@300;400&display=swap');
 
 body, html, #app, .pseudobody {
   width: 100%;
@@ -8,6 +8,7 @@ body, html, #app, .pseudobody {
   min-height: 100%;
   margin: 0;
   padding: 0;
+  font-size: 16px;
 }
 
 body {
@@ -27,18 +28,18 @@ a {
 }
 
 .g-label {
-  padding-bottom: 7px;
+  padding-bottom: 0.5em;
 }
 
 .g-header {
-  font-size: 25px;
+  font-size: 1.7em;
   margin-bottom: 10px;
 }
 
 .g-subtitle {
-  font-size: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  font-size: 1.3em;
+  margin-top: 0.7em;
+  margin-bottom: 0.5em;
 }
 
 .g-text-button {
@@ -50,16 +51,17 @@ a {
 
 .g-typing {
   border: 1px solid var(--font-color);
+  border-radius: 3px;
+
   padding: 10px;
   margin-bottom: 10px;
 
   font-family: var(--typing-font), monospace;
   font-weight: 300;
-  font-size: 19px;
+  font-size: 1.2em;
 
   height: auto;
   line-height: normal;
-  border-radius: 3px;
   outline: 0;
 
   white-space: pre-wrap;
@@ -73,7 +75,7 @@ a {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 15px;
+  font-size: 1em;
   cursor: pointer;
 }
 
