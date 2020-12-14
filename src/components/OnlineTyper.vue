@@ -120,11 +120,23 @@ export default {
   color: black;
 }
 
+.letter:after {
+  display: none;
+  position: absolute;
+  /*font-size: 0.4em;*/
+  /*align-content: center;*/
+  left: 0.15em;
+  content: "";
+  top: -0.6em;
+  /*color: black;*/
+}
+
 .player {
   position: relative;
 }
 
-.player:before {
+.player:after {
+  display: block;
   position: absolute;
   font-size: 0.4em;
   align-content: center;
@@ -134,27 +146,27 @@ export default {
   color: black;
 }
 
-.player.upper:before {
+.player.upper:after {
   top: -0.7em;
 }
 
-.player.above-upper:before {
+.player.above-upper:after {
   top: -0.75em;
 }
 
-.player.lower:before {
+.player.lower:after {
   top: -0.4em;
 }
 
-.player.above-lower:before {
+.player.above-lower:after {
   top: -0.65em;
 }
 
-.player.punctuation:before {
+.player.punctuation:after {
   top: 0.2em;
 }
 
-.player.whitespace:before {
+.player.whitespace:after {
   top: 1em;
 }
 
