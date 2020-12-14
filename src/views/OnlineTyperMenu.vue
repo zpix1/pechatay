@@ -19,6 +19,7 @@
       State: {{ state }}<br>
       <div>
         <div class="g-header">{{ sessionInfo.title }} {{ sessionInfo.mode }}</div>
+        <div class="g-subtitle" v-if="sessionInfo.author">{{ sessionInfo.author }}</div>
         <div>
           Players: {{ playersList.join(", ") }}<br>
           You: {{ sessionInfo.id2username[userId] }}
