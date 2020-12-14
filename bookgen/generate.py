@@ -9,8 +9,11 @@ PUBLIC_SCHEME_FILE = os.path.join('..', 'public', 'scheme.json') #'../public/tex
 
 VERSION = str(randint(1, 10000))
 
+def format_letters(text):
+    return text.replace('ё', 'е')
+
 def format_text(text, sep):
-    text = text.replace('ё', 'е')
+    text = format_letters(text)
     text_list = list(map(lambda s: s.strip(), text.split(sep)))
     ans_list = []
     for par in text_list:
