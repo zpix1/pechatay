@@ -25,26 +25,26 @@
         <div class="g-subtitle" v-if="sessionInfo.author">{{ sessionInfo.author }}</div>
         <div class="info">
 
-        <div v-if="isState('preparing-to-start')">
-          <div v-if="isState('preparing-to-start-server-wait')">
-            Game will start NOW!
+          <div>
+          <div v-if="isState('preparing-to-start')" class="start-button g-button">
+            <div v-if="isState('preparing-to-start-server-wait')">
+              Game will start NOW!
+            </div>
+            <div v-else>
+              Starting in {{ prepareStartCountdown }}...
+            </div>
           </div>
-          <div v-else>
-            Starting in {{ prepareStartCountdown }}...
+
+          <div v-if="isAdmin && isState('not-started')"
+               class="g-button start-button"
+               @click="sendPrepareStart">
+            Start?
           </div>
-        </div>
-
-        <div v-if="isAdmin && isState('not-started')"
-             class="g-button"
-             @click="sendPrepareStart">
-          Start?
-        </div>
-
-
+          </div>
           players:
           <span v-for="(playerId, i) in Object.keys(sessionInfo.playersPos)" :key="playerId"
                 :class="{current: playerId === userId}">
-             {{ i !== 0 ? ', ' : '' }} {{ sessionInfo.id2username[playerId] }}
+             {{ i !== 0 ? ", " : "" }} {{ sessionInfo.id2username[playerId] }}
           </span>
         </div>
 
@@ -270,5 +270,9 @@ export default {
 
 .info {
   margin-bottom: 20px;
+}
+.start-button {
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 </style>

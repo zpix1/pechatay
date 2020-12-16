@@ -91,14 +91,6 @@ export default {
         }
       }
       return undefined;
-      // if (this.playersPos[this.paragraph]) {
-      //   for (let p in this.playersPos[this.paragraph]) {
-      //     if (this.playersPos[this.paragraph][p] === pos) {
-      //       return parseInt(p).toString();
-      //     }
-      //   }
-      // }
-      // return undefined;
     }
   },
   name: "OnlineTyper"
