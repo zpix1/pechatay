@@ -5,16 +5,18 @@
       <div v-if="!$store.state.loading">
         <div class="head">
           <span class="header">⌨️ Pechatay</span>
-          <router-link class="g-text-button" to="/">📒 Book select</router-link>
-          |
-          <router-link class="g-text-button" to="/fight/new"
+
+          <router-link class="g-text-button head-link" to="/">📒 Book select</router-link>
+
+          <router-link class="g-text-button head-link" to="/fight/new"
             >⚔ Fight online</router-link
           >
-          |
-          <a :class="{ 'g-text-button': true, 'router-link-active': settings }" @click="settings = true">
+
+          <a :class="{ 'head-link':true, 'g-text-button': true, 'router-link-active': settings }" @click="settings = true">
             ⚙️ Settings
-          </a> |
-          <router-link class="g-text-button" to="/about">❔ About</router-link>
+          </a>
+
+          <router-link class="g-text-button head-link" to="/about">❔ About</router-link>
         </div>
         <router-view :key="$route.path"  class="container"/>
       </div>
@@ -93,6 +95,12 @@ export default {
 }
 
 .head a.router-link-active {
+  /*font-weight: 500;*/
+
   text-decoration: underline;
+  /*text-decoration-thickness: 1px;*/
+}
+.head-link {
+  margin-left: 20px;
 }
 </style>
