@@ -28,7 +28,7 @@ export default {
 
 <style scoped>
 .continue-typing {
-  font-size: 20px;
+  font-size: 1.3em;
   margin-bottom: 20px;
 }
 </style>

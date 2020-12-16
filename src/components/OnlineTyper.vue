@@ -172,14 +172,4 @@ export default {
 .player.whitespace:after {
   top: 1em;
 }
-
-/*.player.p1 {*/
-/*  color: yellow !important;*/
-/*}*/
-/*.player.p2 {*/
-/*  color: coral !important;*/
-/*}*/
-/*.player.p3 {*/
-/*  color: sienna !important;*/
-/*}*/
 </style>

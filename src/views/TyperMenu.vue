@@ -90,11 +90,6 @@ export default {
   margin-bottom: 10px;
 }
 
-.author {
-  font-size: 20px;
-  margin-bottom: 20px;
-}
-
 .prev-chapter {
   float: left;
 }
