@@ -12,18 +12,18 @@
       <div class="g-button" @click="requestNewSession(null)">create</div>
       <div class="g-subtitle">Custom text mode</div>
       <div class="g-label">your text</div>
-      <div class="g-typing" contenteditable="true" ref="userText" @input="userCustomText = $refs.userText.innerText"></div>
-      <div :class="{ 'g-button': true, disabled: userCustomText.length < 5 || userCustomText.length > 2000 }" @click="requestNewSession($refs.userText.innerText)">create</div>
+      <div class="g-typing" contenteditable="true" ref="userText"
+           @input="userCustomText = $refs.userText.innerText"></div>
+      <div :class="{ 'g-button': true, disabled: userCustomText.length < 5 || userCustomText.length > 2000 }"
+           @click="requestNewSession($refs.userText.innerText)">create
+      </div>
     </div>
     <div v-else>
-      State: {{ state }}<br>
+      <!--      State: {{ state }}<br>-->
       <div>
-        <div class="g-header">{{ sessionInfo.title }} ({{ sessionInfo.mode }})</div>
+        <div class="g-header">{{ sessionInfo.title }} {{ sessionInfo.mode === "random" ? "🎲" : "👆" }}</div>
         <div class="g-subtitle" v-if="sessionInfo.author">{{ sessionInfo.author }}</div>
-        <div>
-          Players: {{ playersList.join(", ") }}<br>
-          You: {{ sessionInfo.id2username[userId] }}
-        </div>
+        <div class="info">
 
         <div v-if="isState('preparing-to-start')">
           <div v-if="isState('preparing-to-start-server-wait')">
@@ -35,9 +35,17 @@
         </div>
 
         <div v-if="isAdmin && isState('not-started')"
-             class="g-text-button"
+             class="g-button"
              @click="sendPrepareStart">
           Start?
+        </div>
+
+
+          players:
+          <span v-for="(playerId, i) in Object.keys(sessionInfo.playersPos)" :key="playerId"
+                :class="{current: playerId === userId}">
+             {{ i !== 0 ? ', ' : '' }} {{ sessionInfo.id2username[playerId] }}
+          </span>
         </div>
 
         <OnlineTyper
@@ -57,7 +65,9 @@
           <ol class="results">
             <li v-for="(winner,i) in sessionInfo.winners" :key="winner.userId" :class="{ winner: i === 0}">
               <!--              {{ winner }}-->
-              <span style="font-weight: 400;">{{ winner.username }}</span> finished with {{ winner.results.totalErrors }}
+              <span style="font-weight: 400;">{{ winner.username }}</span> finished with {{
+                winner.results.totalErrors
+              }}
               errors out of {{ winner.results.totalLetters }}
               letters ({{ (winner.results.totalErrors * 100 / winner.results.totalLetters).toFixed(2) }}%).
               WPM: {{ winner.results.wpmWithFine.toFixed(0) }}.
@@ -93,7 +103,7 @@ export default {
   },
   data() {
     return {
-      sessionId: "13ccd9ab-c1cc-4c0e-84d0-a825dd6ebb6b",
+      sessionId: "",
       socket: io(process.env.VUE_APP_SOCKETIO_URL),
       text: null,
       userId: null,
@@ -246,10 +256,19 @@ export default {
 </script>
 
 <style scoped>
-.winner {
-  text-decoration: underline;
+.winner:before {
+  content: "🥇";
 }
+
+.current {
+  font-weight: 400;
+}
+
 .results {
   margin-top: 10px;
+}
+
+.info {
+  margin-bottom: 20px;
 }
 </style>

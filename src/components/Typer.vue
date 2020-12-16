@@ -1,9 +1,13 @@
 <template>
   <div>
     <div class="info">
-      position: {{ pos }}, paragraph: {{ paragraph + 1 }}/{{ paragraphLength }}, <span v-if="hideTime"
-                                                                                       @click="hideTime = false">time stats hidden</span>
-      <span v-else @click="hideTime = true">wpm: {{ wpm.toFixed(1) }}, time: {{ (currentMs / 1000).toFixed(1) }}</span>
+      position: {{ pos }}, paragraph: {{ paragraph + 1 }}/{{ paragraphLength }},
+      <span v-if="hideTime"
+            @click="hideTime = false"
+            class="g-text-button">time stats hidden</span>
+      <span v-else @click="hideTime = true" class="g-text-button">wpm: {{
+          wpm.toFixed(1)
+        }}, time: {{ (currentMs / 1000).toFixed(1) }}</span>
       <!--      <span @click="hideTime = !hideTime" class="g-text-button">{{ hideTime ? "show time stats" : "hide time stats" }}</span><br>-->
     </div>
     <!-- <div class="typing" v-if="paragaph > 0">

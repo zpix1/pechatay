@@ -54,8 +54,11 @@ export default {
   },
   methods: {
     convertDummy(letter) {
-      if (letter === " " || letter === "\n") {
+      if (letter === " ") {
         return letter;
+      }
+      if (letter === "&para;\n") {
+        return "\n";
       }
       return "&bull;";
     },

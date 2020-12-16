@@ -1,20 +1,22 @@
 <template>
   <div class="pseudobody" :style="cssVars">
-    <div class="container">
+    <div>
       <Settings :modal="settings" @close="settings = false" />
       <div v-if="!$store.state.loading">
         <div class="head">
-          <span class="header">Pechatay</span>
-          <router-link class="g-text-button" to="/">Book select</router-link>
+          <span class="header">⌨️ Pechatay</span>
+          <router-link class="g-text-button" to="/">📒 Book select</router-link>
           |
           <router-link class="g-text-button" to="/fight/new"
-            >Fight online</router-link
+            >⚔ Fight online</router-link
           >
           |
-          <a :class="{ 'g-text-button': true, 'router-link-active': settings }" @click="settings = true">Settings</a> |
-          <router-link class="g-text-button" to="/about">About</router-link>
+          <a :class="{ 'g-text-button': true, 'router-link-active': settings }" @click="settings = true">
+            ⚙️ Settings
+          </a> |
+          <router-link class="g-text-button" to="/about">❔ About</router-link>
         </div>
-        <router-view :key="$route.path" />
+        <router-view :key="$route.path"  class="container"/>
       </div>
       <div v-else>Loading database...</div>
     </div>
@@ -74,18 +76,20 @@ export default {
 }
 
 .container {
-  max-width: 600px;
+  max-width: 700px;
   margin: 15px auto;
 }
 
-.header {
-  font-size: 30px;
-  margin-right: 30px;
+.head {
+  border-radius: 3px;
+  max-width: 800px;
+  margin: 15px auto 30px auto;
+  font-size: 1.3em;
 }
 
-.head {
-  font-size: 20px;
-  margin-bottom: 30px;
+.header {
+  font-size: 1.7em;
+  margin-right: 30px;
 }
 
 .head a.router-link-active {

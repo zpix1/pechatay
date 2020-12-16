@@ -24,7 +24,7 @@ body {
 }
 
 a {
-  color: black;
+  color: var(--font-color);
 }
 
 .g-label {
@@ -69,7 +69,7 @@ a {
 }
 
 .g-button {
-  border: 1px solid black;
+  border: 1px solid var(--font-color);
   padding: 5px;
   border-radius: 3px;
   text-align: center;
@@ -82,4 +82,10 @@ a {
 .g-button.disabled {
   pointer-events: none;
   opacity: 0.6;
+}
+
+input[type="text"] {
+  color: var(--font-color);
+  background: var(--main-color);
+  font-size: 1em;
 }
