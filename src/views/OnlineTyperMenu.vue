@@ -241,11 +241,6 @@ export default {
       }
       return res;
     }
-  },
-  watch: {
-    userCustomText(v) {
-      console.log(v);
-    }
   }
 };
 </script>

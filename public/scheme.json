@@ -1,7 +1,7 @@
 {
     "type": "set",
     "title": "All",
-    "version": "2498",
+    "version": "4718",
     "items": [
         {
             "type": "set",
@@ -17,12 +17,18 @@
         },
         {
             "type": "set",
-            "title": "Уроки",
+            "title": "Уроки (WIP)",
             "items": [
                 {
                     "id": "lesson0",
                     "type": "book",
                     "title": "Урок 1: фыва олдж",
+                    "author": ""
+                },
+                {
+                    "id": "lesson1",
+                    "type": "book",
+                    "title": "Урок 2: п р",
                     "author": ""
                 }
             ]

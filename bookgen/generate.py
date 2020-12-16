@@ -9,8 +9,28 @@ PUBLIC_SCHEME_FILE = os.path.join('..', 'public', 'scheme.json') #'../public/tex
 
 VERSION = str(randint(1, 10000))
 
+to_replace = {
+    '«': '"',
+    '»': '"',
+    '–': '-',
+    '—': '-',
+    '’': "'",
+    'é': 'e',
+    'ê': 'e',
+    '…': '...',
+    '\xa0': '',
+    '\xad': '',
+    '№': 'n.',
+    '‑': '-',
+    'ё': 'е'
+}
+
 def format_letters(text):
-    return text.replace('ё', 'е')
+    ans = ''
+    for l in text:
+        ans += to_replace.get(l, l)
+    ans.replace('\n\n', '\n')
+    return ans
 
 def format_text(text, sep):
     text = format_letters(text)
