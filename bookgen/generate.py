@@ -7,7 +7,7 @@ BOOKS_DIR = 'texts'
 PUBLIC_TEXTS_FILE = os.path.join('..', 'public', 'texts.json') #'../public/texts.json'
 PUBLIC_SCHEME_FILE = os.path.join('..', 'public', 'scheme.json') #'../public/texts.json'
 
-VERSION = str(randint(1, 10000))
+VERSION = '287'
 
 to_replace = {
     '«': '"',
