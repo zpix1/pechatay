@@ -3,7 +3,7 @@ import TyperMenu from "@/views/TyperMenu.vue";
 import BookSelect from "@/views/BookSelect.vue";
 import OnlineTyperMenu from "@/views/OnlineTyperMenu";
 import About from "@/views/About";
-import {baseUrl} from "@/../vue.config";
+import {publicPath} from "@/../vue.config";
 
 const routes = [
   {
@@ -35,7 +35,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(baseUrl),
+  history: createWebHistory(publicPath),
   routes,
 });
 

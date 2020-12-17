@@ -1,3 +1,4 @@
+import {publicPath} from "@/../vue.config";
 class Database {
   static dbName = "pechatayDB";
   static localStorageSchemeKey = "pechatayBooksScheme";
@@ -30,7 +31,7 @@ class Database {
   init() {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        fetch("/scheme.json")
+        fetch(publicPath + "scheme.json")
           .then(r => r.json())
           .then(json => {
             this.scheme = json;
@@ -47,7 +48,7 @@ class Database {
               if (localStorage.getItem(Database.localStorageSchemeKey) !== JSON.stringify(json)) {
                 this.generateId2book(json);
                 console.log("pechatayBooksScheme updated, loading texts json");
-                fetch("/texts.json")
+                fetch(publicPath + "texts.json")
                   .then(r => r.json())
                   .then(json => {
                     for (let i = 0; i < json.length; i++) {
