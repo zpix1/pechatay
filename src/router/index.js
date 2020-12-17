@@ -3,6 +3,7 @@ import TyperMenu from "@/views/TyperMenu.vue";
 import BookSelect from "@/views/BookSelect.vue";
 import OnlineTyperMenu from "@/views/OnlineTyperMenu";
 import About from "@/views/About";
+import {baseUrl} from "@/../vue.config";
 
 const routes = [
   {
@@ -34,10 +35,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  base: process.env.NODE_ENV === "production"
-    ? "/pechatay"
-    : "/",
-  history: createWebHistory(),
+  history: createWebHistory(baseUrl),
   routes,
 });
 
