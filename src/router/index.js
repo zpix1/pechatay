@@ -1,4 +1,4 @@
-import {createWebHistory, createRouter} from "vue-router";
+import {createWebHashHistory, createRouter} from "vue-router";
 import TyperMenu from "@/views/TyperMenu.vue";
 import BookSelect from "@/views/BookSelect.vue";
 import OnlineTyperMenu from "@/views/OnlineTyperMenu";
@@ -35,7 +35,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(publicPath),
+  history: createWebHashHistory(publicPath),
   routes,
 });
 
