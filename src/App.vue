@@ -1,7 +1,7 @@
 <template>
   <div class="pseudobody" :style="cssVars">
-    <div>
-      <Settings :modal="settings" @close="settings = false" />
+    <div class="big-container">
+      <Settings :modal="settings" @close="settings = false"/>
       <div v-if="!$store.state.loading">
         <div class="head">
           <span class="header">⌨️ Pechatay</span>
@@ -9,16 +9,18 @@
           <router-link class="g-text-button head-link" to="/">📒 Book select</router-link>
 
           <router-link class="g-text-button head-link" to="/fight/new"
-            >⚔ Fight online</router-link
+          >⚔ Fight online
+          </router-link
           >
 
-          <a :class="{ 'head-link':true, 'g-text-button': true, 'router-link-active': settings }" @click="settings = true">
+          <a :class="{ 'head-link':true, 'g-text-button': true, 'router-link-active': settings }"
+             @click="settings = true">
             ⚙️ Settings
           </a>
 
           <router-link class="g-text-button head-link" to="/about">❔ About</router-link>
         </div>
-        <router-view :key="$route.path"  class="container"/>
+        <router-view :key="$route.path" class="container"/>
       </div>
       <div v-else>Loading database...</div>
     </div>
@@ -54,9 +56,9 @@ export default {
         "--correct-char-color": "blue"
       };
       if (this.$store.state.settings.theme === "Light") {
-        return { ...both, ...lightTheme };
+        return {...both, ...lightTheme};
       } else {
-        return { ...both, ...darkTheme };
+        return {...both, ...darkTheme};
       }
     },
   },
@@ -82,6 +84,11 @@ export default {
   margin: 15px auto;
 }
 
+.big-container {
+  max-width: 800px;
+  margin: 15px auto;
+}
+
 .head {
   border-radius: 3px;
   max-width: 800px;
@@ -95,11 +102,19 @@ export default {
 }
 
 .head a.router-link-active {
-  /*font-weight: 500;*/
-
   text-decoration: underline;
-  /*text-decoration-thickness: 1px;*/
+  user-focus: none;
+  outline: 0;
 }
+
+a, .header {
+  user-select: none;
+}
+
+a:hover, a:active, a:focus {
+  outline: 0;
+}
+
 .head-link {
   margin-left: 20px;
 }

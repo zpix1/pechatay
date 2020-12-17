@@ -7,12 +7,6 @@
   </p>
 
   <div class="g-header">F.A.Q.</div>
-  <p class="question">
-    Where my results and custom books are saved?
-  </p>
-  <p class="answer">
-    All your stats and books are saved locally, so don't worry about progress.
-  </p>
 
   <p class="question">
     Why time stats are always hidden?
@@ -60,6 +54,7 @@ export default {
 
 <style scoped>
 .question {
+  font-weight: 400;
   font-style: italic;
 }
 </style>
