@@ -14,7 +14,7 @@ jobs:
           npm install
           npm run build
         env:
-          VUE_APP_SOCKETIO_URL: "http://188.225.38.69:61676"
+          VUE_APP_SOCKETIO_URL: "wss://r45.xyz:61676"
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.7.1
