@@ -34,6 +34,9 @@ const routes = [
 ];
 
 const router = createRouter({
+  base: process.env.NODE_ENV === "production"
+    ? "/pechatay/"
+    : "/",
   history: createWebHistory(),
   routes,
 });
