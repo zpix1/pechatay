@@ -2,13 +2,12 @@
   <div>
     <div v-if="set.type === 'set'">
       <div>{{ set.title }}</div>
-      <ul v-for="element in set.items" :key="element.title">
+      <ol v-for="element in set.items" :key="element.title">
         <SchemeEntry :set="element" />
-      </ul>
+      </ol>
     </div>
     <div v-else>
-      {{ $store.state.db.getBook(set.id).userData.finished ? '+' : '' }}
-      <router-link class="g-text-button" :to="{ name: 'TyperMenu', params: { id: set.id } }">{{ set.title }}</router-link>
+      <router-link :class="{ 'final-entry': true, 'g-text-button': true, 'finished': $store.state.db.getBook(set.id).userData.finished }" :to="{ name: 'TyperMenu', params: { id: set.id } }">{{ set.title }}</router-link>
     </div>
   </div>
 </template>
@@ -21,3 +20,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.finished:before {
+  content: "✔️" !important;
+}
+</style>
