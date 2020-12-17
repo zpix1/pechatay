@@ -194,7 +194,8 @@ export default {
       this.textArray[this.pos].state = "c";
     },
     convertLetter(letter) {
-      return letter === "NEWLINE" ? "&para;\n" : letter;
+      // letter[0] to escape server side XSS
+      return letter === "NEWLINE" ? "&para;\n" : letter[0];
     }
   },
   computed: {

@@ -1,17 +1,31 @@
 <template>
   <div>
-    <div class="example g-typing">
-      <span v-for="(letterEntry, i) in textArray"
-            :key="letterEntry.letter + i"
-            v-html="dummy ? convertDummy(convertLetter(letterEntry.letter)) : convertLetter(letterEntry.letter)"
-            :data-text="(player = getPlayerByPos(i)) ? player : null"
+    <div class="example g-typing" v-if="dummy">
+      <span v-for="(letterEntry, i) in textArray" :key="i">
+        <span
+          v-html="convertDummy(convertLetter(letterEntry.letter))">
+        </span>
+      </span>
+    </div>
+    <div class="example g-typing" v-else>
+      <span v-for="(letterEntry, i) in textArray" :key="i">
+        <span v-if="player = getPlayerByPos(i)">
+          <span
+            :data-text="player ? player : null"
             :class="{
+              ['player p' + player + ' ' + getLetterOffsetClass(letterEntry.letter)]: player
+          }">
+          </span>
+        </span>
+        <span
+          :class="{
               letter: true,
               good: letterEntry.state === '+',
               bad: letterEntry.state === '-',
               current: letterEntry.state === 'c',
-              ['player p' + player + ' ' + getLetterOffsetClass(letterEntry.letter)]: player,
-            }">
+            }"
+          v-html="convertLetter(letterEntry.letter)">
+        </span>
       </span>
     </div>
 
@@ -98,35 +112,35 @@ export default {
 </script>
 
 <style scoped>
-.example > .letter.good {
+.letter.good {
   color: var(--correct-char-color);
 }
 
-.example > .letter.bad {
+.letter.bad {
   text-decoration: underline red;
   color: red;
 }
 
-.example > .letter.current {
+.letter.current {
   text-decoration: underline;
 }
 
-.example > .letter.empty {
+.letter.empty {
   color: black;
 }
 
-.letter:after {
-  display: none;
-  position: absolute;
-  /*font-size: 0.4em;*/
-  /*align-content: center;*/
-  left: 0.15em;
-  content: "";
-  top: -0.6em;
-  /*color: black;*/
-}
+/*.letter:after {*/
+/*  !*display: none;*!*/
+/*  position: absolute;*/
+/*  !*font-size: 0.4em;*!*/
+/*  !*align-content: center;*!*/
+/*  left: 0.15em;*/
+/*  !*content: "&";*!*/
+/*  top: -0.6em;*/
+/*  !*color: black;*!*/
+/*}*/
 
-.player {
+.player, .letter {
   position: relative;
 }
 
