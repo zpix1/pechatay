@@ -1,0 +1,54 @@
+{
+    "type": "set",
+    "title": "All",
+    "version": "311",
+    "items": [
+        {
+            "type": "set",
+            "title": "Книги",
+            "items": [
+                {
+                    "id": "alice",
+                    "type": "book",
+                    "title": "Through the Looking-Glass",
+                    "author": "Lewis Carroll",
+                    "lang": "en"
+                },
+                {
+                    "id": "amok",
+                    "type": "book",
+                    "title": "Амок",
+                    "author": "Стефан Цвейг",
+                    "lang": "ru"
+                },
+                {
+                    "id": "fragment0kafka0",
+                    "type": "book",
+                    "title": "Превращение",
+                    "author": "Франц Кафка",
+                    "lang": "ru"
+                }
+            ]
+        },
+        {
+            "type": "set",
+            "title": "Уроки (WIP)",
+            "items": [
+                {
+                    "id": "lesson0",
+                    "type": "book",
+                    "title": "Урок 1: фыва олдж",
+                    "author": "",
+                    "lang": "ru"
+                },
+                {
+                    "id": "lesson1",
+                    "type": "book",
+                    "title": "Урок 2: п р",
+                    "author": "",
+                    "lang": "ru"
+                }
+            ]
+        }
+    ]
+}
