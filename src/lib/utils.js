@@ -55,3 +55,16 @@ export function randomName() {
   }
   return result;
 }
+
+export function langToEmoji(lang) {
+  if (lang === "ru") {
+    return "🇷🇺";
+  }
+  if (lang === "en") {
+    return "🇬🇧";
+  }
+  if (lang === "fr") {
+    return "🇫🇷";
+  }
+  return lang.toUpperCase();
+}
